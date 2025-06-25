@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/admin-layout}">
+<head>
+    <title>Dashboard</title>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <div class="container-xxl flex-grow-1 container-p-y">
+    <h4 class="fw-bold py-3 mb-4">Dashboard</h4>
+
+    <!-- Overview cards -->
+    <div class="row">
+      <div class="col-lg-3 col-md-6 col-12 mb-4">
+        <div class="card">
+          <div class="card-body text-center">
+            <h6 class="mb-1">Products</h6>
+            <h4 class="fw-bold mb-0">42</h4>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-12 mb-4">
+        <div class="card">
+          <div class="card-body text-center">
+            <h6 class="mb-1">Today's Orders</h6>
+            <h4 class="fw-bold mb-0">8</h4>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-12 mb-4">
+        <div class="card">
+          <div class="card-body text-center">
+            <h6 class="mb-1">Today's Revenue</h6>
+            <h4 class="fw-bold mb-0">1,200,000₫</h4>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-12 mb-4">
+        <div class="card">
+          <div class="card-body text-center">
+            <h6 class="mb-1">Users</h6>
+            <h4 class="fw-bold mb-0">38</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts and recent orders -->
+    <div class="row">
+      <div class="col-lg-6 col-12 mb-4">
+        <div class="card">
+          <div class="card-header">Revenue in the Last 7 Days</div>
+          <div class="card-body">
+            <div id="revenueChart" style="height: 300px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent orders -->
+      <div class="col-lg-6 col-12 mb-4">
+        <div class="card">
+          <div class="card-header">Recent Orders</div>
+          <div class="card-body">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">#1012 - 250,000₫ - Processing</li>
+              <li class="list-group-item">#1011 - 540,000₫ - Completed</li>
+              <li class="list-group-item">#1010 - 310,000₫ - Cancelled</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>
