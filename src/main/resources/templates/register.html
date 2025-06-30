@@ -146,18 +146,30 @@
                             <h2>New to our Shop?</h2>
                             <p>There are advances being made in science and technology
                                 everyday, and a good example of this is the</p>
-                            <a th:href="@{/register}" class="btn_3">Create an Account</a>
+                            <a th:href="@{/login}" class="btn_3">Sign In</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="login_part_form">
                         <div class="login_part_form_iner">
-                            <h3>Welcome Back ! <br>
-                                Please Sign in now</h3>
-                            <form class="row contact_form" th:action="@{/login}" method="post" novalidate="novalidate">
+                            <h3>Let’s get started!<br> 
+                                Create your account now</h3>
+                            <form class="row contact_form" th:action="@{/register}" method="post" novalidate="novalidate">
                                 <div class="col-md-12 form-group p_star">
-                                    <input type="text" class="form-control" id="name" name="email" value=""
+                                    <input type="text" class="form-control" id="name" name="name" value=""
+                                        placeholder="Name">
+                                </div>
+                                <div class="col-md-12 form-group p_star">
+                                    <input type="text" class="form-control" id="Phone" name="phone" value=""
+                                        placeholder="Phone">
+                                </div>
+                                <div class="col-md-12 form-group p_star">
+                                    <input type="text" class="form-control" id="Address" name="address" value=""
+                                        placeholder="Address">
+                                </div>
+                                <div class="col-md-12 form-group p_star">
+                                    <input type="text" class="form-control" id="email" name="email" value=""
                                         placeholder="Email">
                                 </div>
                                 <div class="col-md-12 form-group p_star">
@@ -167,19 +179,10 @@
                                 <div class="col-md-12 form-group">
                                     <div class="creat_account d-flex align-items-center">
                                         <input type="checkbox" id="f-option" name="selector">
-                                        <label for="f-option">Remember me</label>
-                                    </div>
-                                    <div class="text-center">
-                                        <p th:if="${param.error}" style="color: red;">Sai tài khoản hoặc mật khẩu ! Vui lòng nhập lại .</p>
-                                    </div>
-                                    <div class="text-center">
-                                        <p th:if="${param.logout}" style="color: green;">Đã đăng xuất thành công ! </p>
-                                    </div>
-                                    <div class="text-center">
-                                        <p th:if="${param.success}" style="color: green;">Chúc Mừng bạn đã đăng ký thành công !  ! </p>
+                                        <label for="f-option">Đồng ý các điều khoản </label>
                                     </div>
                                     <button type="submit" value="submit" class="btn_3">
-                                        Sign In
+                                        Sign Up
                                     </button>
                                     <a class="lost_pass" href="#">forget password?</a>
                                 </div>
