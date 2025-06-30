@@ -155,38 +155,39 @@
                         <div class="login_part_form_iner">
                             <h3>Let’s get started!<br> 
                                 Create your account now</h3>
-                            <form class="row contact_form" th:action="@{/register}" method="post" novalidate="novalidate">
+                            <form class="row contact_form" th:action="@{/register}" method="post" th:object="${user}" novalidate="novalidate">
                                 <div class="col-md-12 form-group p_star">
-                                    <input type="text" class="form-control" id="name" name="name" value=""
-                                        placeholder="Name">
+                                    <input type="text" class="form-control" id="name" name="name" th:value="*{name}" placeholder="Name">
+                                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red;"></div>
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-                                    <input type="text" class="form-control" id="Phone" name="phone" value=""
-                                        placeholder="Phone">
+                                    <input type="text" class="form-control" id="Phone" name="phone" th:value="*{phone}" placeholder="Phone">
+                                    <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" style="color:red;"></div>
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-                                    <input type="text" class="form-control" id="Address" name="address" value=""
-                                        placeholder="Address">
+                                    <input type="text" class="form-control" id="Address" name="address" th:value="*{address}" placeholder="Address">
+                                    <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" style="color:red;"></div>
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-                                    <input type="text" class="form-control" id="email" name="email" value=""
-                                        placeholder="Email">
+                                    <input type="email" class="form-control" id="email" name="email" th:value="*{email}" placeholder="Email">
+                                    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color:red;"></div>
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-                                    <input type="password" class="form-control" id="password" name="password" value=""
-                                        placeholder="Password">
+                                    <input type="password" class="form-control" id="password" name="password" th:value="*{password}" placeholder="Password">
+                                    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color:red;"></div>
                                 </div>
                                 <div class="col-md-12 form-group">
                                     <div class="creat_account d-flex align-items-center">
                                         <input type="checkbox" id="f-option" name="selector">
-                                        <label for="f-option">Đồng ý các điều khoản </label>
+                                        <label for="f-option">Đồng ý các điều khoản</label>
                                     </div>
                                     <button type="submit" value="submit" class="btn_3">
                                         Sign Up
                                     </button>
-                                    <a class="lost_pass" href="#">forget password?</a>
+                                    <a class="lost_pass" href="#">Forget Password?</a>
                                 </div>
                             </form>
+                            <div th:if="${error}" th:text="${error}" style="color:red;"></div>
                         </div>
                     </div>
                 </div>

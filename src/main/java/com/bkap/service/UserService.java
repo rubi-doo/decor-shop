@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import org.springframework.stereotype.Service;
 import com.bkap.entity.User;
@@ -55,6 +56,11 @@ public class UserService implements UserDetailsService{
         if (userRepository.findByEmail(user.getEmail()).isPresent()){
             throw new RuntimeException("Email already exists "+ user.getEmail());
         }
+
+        if (user.getPassword().length() < 6 || user.getPassword().length() > 20) {
+            throw new RuntimeException("Password must be between 6 and 20 characters");
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         if (user.getRole() == null || user.getRole().isEmpty()) {
