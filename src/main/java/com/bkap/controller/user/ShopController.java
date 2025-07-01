@@ -44,6 +44,7 @@ public class ShopController {
 	public String home(Model model) {
 		List<Category> parentCategories = categoryService.getAllParentCategoriesWithChildren();
 		model.addAttribute("categories", parentCategories);
+		
 		return "layout/user-layout";
 	}
 

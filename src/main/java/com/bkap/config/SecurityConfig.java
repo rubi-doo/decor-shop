@@ -36,6 +36,8 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .permitAll())
+                .exceptionHandling(ex -> ex
+                .accessDeniedPage("/403"))
                 .csrf(csrf -> csrf.disable());
 
         return http.build();

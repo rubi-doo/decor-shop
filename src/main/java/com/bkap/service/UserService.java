@@ -31,26 +31,20 @@ public class UserService implements UserDetailsService{
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Override    
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        com.bkap.entity.User user = userRepository.findByEmail(email)
-        .orElseThrow(() -> new UsernameNotFoundException("Email Not Found: "+ email)) ;
-        
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        String role = user.getRole();
-        if (role != null && !role.isEmpty()) {
-            String authority = role.startsWith("ROLE_") ? role : "ROLE_" + role;
-        } else {
-            throw new UsernameNotFoundException("Emai has no role " + email);
-        }
-        
-        return new org.springframework.security.core.userdetails.User(
-            user.getEmail(),
-            user.getPassword(),
-            authorities
-        );
-    
+    @Override
+public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    com.bkap.entity.User user = userRepository.findByEmail(email)
+        .orElseThrow(() -> new UsernameNotFoundException("Email Not Found: "+ email));
+    List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+    String role = user.getRole();
+    if (role != null && !role.isEmpty()) {
+        String authority = role.startsWith("ROLE_") ? role : "ROLE_" + role;
+        authorities.add(new SimpleGrantedAuthority(authority));
+    } else {
+        throw new UsernameNotFoundException("Email has no role " + email);
     }
+    return new CustomUserDetails(user, authorities);
+}
 
     public void registerUser(User user){
         if (userRepository.findByEmail(user.getEmail()).isPresent()){
