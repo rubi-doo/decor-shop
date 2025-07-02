@@ -20,7 +20,7 @@
 			<table class="table table-bordered">
 				<thead>
 					<tr>
-						<th>ID</th>
+						<th>Mã</th>
 						<th>Người đặt</th>
 						<th>Ngày đặt</th>
 						<th>Phương thức TT</th>
@@ -72,6 +72,18 @@
 				</tbody>
 			</table>
 		</div>
+		<div class="d-flex justify-content-center mt-4">
+			<ul class="pagination">
+				<li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+					th:classappend="${i == currentPage} ? 'active'" class="page-item">
+					<a class="page-link"
+					th:href="@{/admin/orders(page=${i}, size=${pageSize})}"
+					th:text="${i + 1}"></a>
+				</li>
+			</ul>
+		</div>
+
+
 
 	</div>
 </body>

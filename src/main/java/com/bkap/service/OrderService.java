@@ -1,5 +1,6 @@
 package com.bkap.service;
 
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -7,7 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.bkap.dto.CartItemDTO;
@@ -18,7 +21,7 @@ import com.bkap.entity.User;
 import com.bkap.gateway.PaymentGateway;
 import com.bkap.repository.OrderRepository;
 import com.bkap.repository.ProductRepository;
-
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class OrderService {
@@ -112,9 +115,9 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
-    }
+//    public List<Order> getAllOrders() {
+//        return orderRepository.findAll();
+//    }
     public void updateOrderStatus(Long orderId, String newStatus) {
         Order order = orderRepository.findById(orderId)
             .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy đơn hàng"));
@@ -171,6 +174,9 @@ public class OrderService {
             throw new IllegalAccessException("Bạn không có quyền xem đơn hàng này");
         }
         return order;
+    }
+    public Page<Order> getAllOrders(Pageable pageable) {
+        return orderRepository.findAll(pageable);
     }
 
 }

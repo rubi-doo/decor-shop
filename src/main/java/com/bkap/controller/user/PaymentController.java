@@ -66,7 +66,7 @@ public class PaymentController {
 	        }).collect(Collectors.toList());
 
 	        model.addAttribute("cartItems", cartItemDisplays);
-	        model.addAttribute("cartItemsJson", cartItemDTOs); // Dùng cho JavaScript
+	        model.addAttribute("cartItemsJson", cartItemDTOs); 
 	        model.addAttribute("total", cartService.getTotal(session));
 	        return "checkout";
 	    }
@@ -82,7 +82,7 @@ public class PaymentController {
 	   
 	    @GetMapping("/order-confirmed")
 	    public String orderConfirmedPage() {
-	        return "order-confirmed"; // file HTML đơn giản
+	        return "order-confirmed"; 
 	    }
 
 	    
