@@ -24,21 +24,22 @@ public class ShopController {
 
 	@Autowired
 	private CategoryService categoryService;
-	
+
 	@ModelAttribute("categories")
 	public List<Category> getMenuCategories() {
-	    List<Category> parents = categoryService.getAllParentCategoriesWithChildren();
-	    for (Category parent : parents) {
-	        List<Category> children = categoryService.findChildrenByParentId(parent.getId());
-	        parent.setChildren(children);
+		List<Category> parents = categoryService.getAllParentCategoriesWithChildren();
+		for (Category parent : parents) {
+			List<Category> children = categoryService.findChildrenByParentId(parent.getId());
+			parent.setChildren(children);
 
-	        for (Category child : children) {
-	            List<Category> subChildren = categoryService.findChildrenByParentId(child.getId());
-	            child.setChildren(subChildren);
-	        }
-	    }
-	    return parents;
+			for (Category child : children) {
+				List<Category> subChildren = categoryService.findChildrenByParentId(child.getId());
+				child.setChildren(subChildren);
+			}
+		}
+		return parents;
 	}
+
 	// Trang chủ
 	@GetMapping("/")
 	public String home(Model model) {
@@ -47,31 +48,69 @@ public class ShopController {
 		return "layout/user-layout";
 	}
 
-	// Xem sản phẩm theo danh mục
 	@GetMapping("/category/{id}")
-	public String viewByCategory(@PathVariable Long id, Model model, Pageable pageable) {
-	    Category currentCategory = categoryService.findById(id);
-	    if (currentCategory == null) return "redirect:/";
+	// Xem sản phẩm theo danh mục
+	public String viewByCategory(@PathVariable Long id, @RequestParam(required = false) String keyword,
+			@RequestParam(required = false) String sort, @RequestParam(required = false) String inStock,
+			Model model, Pageable pageable) {
+		
+		Category current = categoryService.findById(id);
+		if (current == null)
+			return "redirect:/";
 
-	    List<Category> subCategories = categoryService.findChildrenByParentId(id);
-	    
-	    Page<Product> products;
-	    if (!subCategories.isEmpty()) {
-	        products = productService.findByCategoryIn(subCategories, pageable); // dùng biến "subCategories" nhưng method chung
-	    } else {
-	        products = productService.findByCategory(currentCategory, pageable);
-	    }
+		Category parentCategory;
+		List<Category> subCategories;
+		List<Long> categoryIds;
 
-	    Page<Product> page = (products instanceof Page) ? (Page<Product>) products : Page.empty(); // fallback
+		boolean isLevel2 = current.getParent() != null && current.getParent().getParent() == null;
+		boolean isLevel3 = current.getParent() != null && current.getParent().getParent() != null;
 
-	    model.addAttribute("parentCategory", currentCategory);
-	    model.addAttribute("subCategories", subCategories);
-	    model.addAttribute("page", page);
-	    model.addAttribute("products", page.getContent());
+		Long filterCategoryId;
 
-	    return "user/category-products";
+		if (isLevel3) {
+			parentCategory = current.getParent(); // cấp 2
+	        subCategories = categoryService.findChildrenByParentId(parentCategory.getId());
+	        categoryIds = List.of(current.getId());
+	        
+			
+		} else if (isLevel2) {
+			 parentCategory = current;
+			 subCategories = categoryService.findChildrenByParentId(current.getId());
+
+			    if (subCategories.isEmpty()) {
+			        categoryIds = List.of(current.getId()); // fallback: dùng chính nó
+			    } else {
+			        categoryIds = subCategories.stream().map(Category::getId).toList();
+			    }
+		} else {
+			parentCategory = current;
+	        subCategories = categoryService.findChildrenByParentId(current.getId());
+	        model.addAttribute("parentCategory", parentCategory);
+	        model.addAttribute("selectedCategory", current);
+	        model.addAttribute("subCategories", subCategories);
+	        model.addAttribute("page", Page.empty());
+	        model.addAttribute("products", List.of());
+	        
+	        return "user/category-products";
+		}
+
+		Page<Product> products = productService.filterProducts(
+		        categoryIds, keyword, sort, inStock, pageable
+		    );
+
+		    model.addAttribute("parentCategory", parentCategory);
+		    model.addAttribute("selectedCategory", current);
+		    model.addAttribute("subCategories", subCategories);
+		    model.addAttribute("page", products);
+		    model.addAttribute("products", products.getContent());
+
+		    // Giữ lại filter khi render lại view
+		    model.addAttribute("keyword", keyword);
+		    model.addAttribute("sort", sort);
+		    model.addAttribute("inStock", inStock);
+
+		    return "user/category-products";
 	}
-
 
 
 }
