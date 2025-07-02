@@ -1,95 +1,99 @@
 <header class="main_menu home_menu" th:fragment="header"
-  xmlns:th="http://www.thymeleaf.org"
-        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<div class="container">
 		<div class="row align-items-center">
 			<div class="col-lg-12">
 				<nav class="navbar navbar-expand-lg navbar-light">
-					<a class="navbar-brand" th:href="@{/}"> <img th:src="@{/user/img/logo.png}" alt="logo">
+					<a class="navbar-brand" th:href="@{/}"> <img
+						th:src="@{/user/img/logo.png}" alt="logo">
 					</a>
 					<button class="navbar-toggler" type="button" data-toggle="collapse"
-						data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-						aria-expanded="false" aria-label="Toggle navigation">
+						data-target="#navbarSupportedContent"
+						aria-controls="navbarSupportedContent" aria-expanded="false"
+						aria-label="Toggle navigation">
 						<span class="menu_icon"><i class="fas fa-bars"></i></span>
 					</button>
 
-					<div class="collapse navbar-collapse main-menu-item" id="navbarSupportedContent">
+					<div class="collapse navbar-collapse main-menu-item"
+						id="navbarSupportedContent">
 						<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-							<li class="nav-item"><a class="nav-link" th:href="@{/}">Trang chủ</a>
-							</li>
+							<li class="nav-item"><a class="nav-link" th:href="@{/}">Trang
+									chủ</a></li>
 
 
 							<!-- Mega Menu -->
-							<li class="nav-item dropdown position-static" th:each="cat1 : ${categories}"><a
-									class="nav-link dropdown-toggle" href="#" th:text="${cat1.name}"
-									id="megaMenu__${cat1.id}" data-toggle="dropdown" aria-haspopup="true"
-									aria-expanded="false"> </a> <!-- Dropdown menu -->
+							<li class="nav-item dropdown position-static"
+								th:each="cat1 : ${categories}"><a
+								class="nav-link dropdown-toggle" href="#" th:text="${cat1.name}"
+								id="megaMenu__${cat1.id}" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false"> </a> <!-- Dropdown menu -->
 								<div class="dropdown-menu w-100 mega-menu p-4"
 									th:attr="aria-labelledby='megaMenu__' + ${cat1.id}">
 									<div class="row">
 										<!-- Danh mục cấp 2 -->
 										<div class="col-md-3" th:each="cat2 : ${cat1.children}">
 											<h6 class="dropdown-header">
-												<a th:href="@{/category/{id}(id=${cat2.id})}" th:text="${cat2.name}"
+												<a th:href="@{/category/{id}(id=${cat2.id})}"
+													th:text="${cat2.name}"
 													class="dropdown-item font-weight-bold"></a>
 											</h6>
 
 											<!-- Danh mục cấp 3 nếu có -->
-											<div th:if="${cat2.children != null and !cat2.children.isEmpty()}">
+											<div
+												th:if="${cat2.children != null and !cat2.children.isEmpty()}">
 												<a class="dropdown-item" th:each="cat3 : ${cat2.children}"
 													th:href="@{/category/{id}(id=${cat3.id})}"
 													th:text="${cat3.name}"></a>
 											</div>
 										</div>
 									</div>
-								</div>
-							</li>
+								</div></li>
 
 
 							<!-- Đưa login/signup ra ngoài -->
-							<li class="nav-item" sec:authorize="isAnonymous()">
-								<a class="nav-link" th:href="@{/login}">Login</a>
-							</li>
+							<li class="nav-item" sec:authorize="isAnonymous()"><a
+								class="nav-link" th:href="@{/login}">Login</a></li>
 
 							<!-- Nếu ĐÃ đăng nhập -->
 							<li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-								<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-									data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									👤 <span sec:authentication="principal.name"></span>
-								</a>
+								<a class="nav-link dropdown-toggle" href="#" id="userDropdown"
+								role="button" data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false"> 👤 <span
+									sec:authentication="principal.name"></span>
+							</a>
 								<div class="dropdown-menu" aria-labelledby="userDropdown">
-									<a class="dropdown-item" th:href="@{/profile}">Thông tin tài khoản</a>
-									<a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a>
+									<a class="dropdown-item" th:href="@{/profile}">Thông tin
+										tài khoản</a> <a class="dropdown-item" th:href="@{/logout}">Đăng
+										xuất</a>
 								</div>
 							</li>
 						</ul>
 					</div>
 
 					<!-- Search and Cart Icons -->
-
 					<div class="hearer_icon d-flex">
-						<a id="search_1" href="javascript:void(0)"><i class="ti-search"></i></a> <a
-							th:href="@{/wishlist}"><i class="ti-heart"></i></a>
+						<a id="search_1" href="javascript:void(0)"> <i
+							class="ti-search"></i>
+						</a> <a th:href="@{/wishlist}"> <i class="ti-heart"></i>
+						</a>
 						<div class="dropdown cart">
-							<a class="dropdown-toggle" href="#" id="navbarDropdownCart" role="button"
-								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i
-									class="fas fa-cart-plus"></i>
+							<a class="dropdown-toggle" href="#" id="navbarDropdownCart"
+								role="button" data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false"> <i class="fas fa-cart-plus"></i>
 							</a>
 						</div>
 					</div>
-				</nav>
-			</div>
-		</div>
+</header>
+<!-- Search input -->
+<div class="search_input" id="search_input_box">
+	<div class="container">
+		<form class="d-flex justify-content-between search-inner">
+			<input type="text" class="form-control" id="search_input"
+				placeholder="Search Here">
+			<button type="submit" class="btn"></button>
+			<span class="ti-close" id="close_search" title="Close Search"></span>
+		</form>
 	</div>
-
-	<!-- Search input -->
-	<div class="search_input" id="search_input_box">
-		<div class="container">
-			<form class="d-flex justify-content-between search-inner">
-				<input type="text" class="form-control" id="search_input" placeholder="Search Here">
-				<button type="submit" class="btn"></button>
-				<span class="ti-close" id="close_search" title="Close Search"></span>
-			</form>
-		</div>
-	</div>
+</div>
 </header>
