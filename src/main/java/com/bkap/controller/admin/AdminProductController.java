@@ -41,12 +41,31 @@ public class AdminProductController {
 	private ProductRepository productRepository;
 
 	@GetMapping("/products")
-	public String view(Model model, @PageableDefault(size = 10) Pageable pageable) {
-   	 Page<Product> page = productService.findAll(pageable);
-   	model.addAttribute("page", page);
-    model.addAttribute("products", page.getContent());
-		return "admin/product/list";
+	public String view(
+	        @RequestParam(name = "keyword", required = false) String keyword,
+	        @RequestParam(name = "sort", required = false) String sort,
+	        @PageableDefault(size = 10) Pageable pageable,
+	        Model model) {
+
+	
+	    Page<Product> page = productService.filterProducts(
+	            null,       // categoryIds chưa cần lọc danh mục
+	            keyword,
+	            sort,
+	            null,       // inStock chưa dùng
+	            pageable
+	    );
+
+	    model.addAttribute("page", page);
+	    model.addAttribute("products", page.getContent());
+
+	    // Giữ lại keyword và sort trên view
+	    model.addAttribute("keyword", keyword);
+	    model.addAttribute("sort", sort);
+
+	    return "admin/product/list";
 	}
+
 
 	@GetMapping("/products/create")
 	public String create(Model model) {
