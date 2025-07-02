@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/admin-layout}">
+
+<div layout:fragment="content" class="container mt-4">
+
+	<h2>
+		Chi tiết đơn hàng #<span th:text="${order.id}"></span>
+	</h2>
+
+	<!-- Thông tin chung -->
+	<div class="row mt-3">
+		<div class="col-md-6">
+			<p>
+				<strong>Khách hàng:</strong> <span th:text="${order.user.name}"></span>
+			</p>
+			<p>
+				<strong>Số điện thoại:</strong> <span th:text="${order.user.phone}"></span>
+			</p>
+			<p>
+				<strong>Email:</strong> <span th:text="${order.user.email}"></span>
+			</p>
+			<p>
+				<strong>Địa chỉ:</strong> <span th:text="${order.address}"></span>
+			</p>
+		</div>
+		<div class="col-md-6">
+			<p>
+				<strong>Ngày đặt:</strong> <span
+					th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}"></span>
+			</p>
+			<p>
+				<strong>Phương thức:</strong> <span th:text="${order.paymentMethod}"></span>
+			</p>
+			<p>
+				<strong>Trạng thái thanh toán:</strong> <span
+					class="badge bg-secondary" th:text="${order.paymentStatus}"></span>
+			</p>
+			<p>
+				<strong>Trạng thái đơn:</strong> <span class="badge bg-secondary"
+					th:text="${order.status}"></span>
+			</p>
+		</div>
+	</div>
+
+	<!-- Ghi chú -->
+	<div class="mt-3">
+		<p>
+			<strong>Ghi chú:</strong>
+		</p>
+		<p th:text="${order.note} ?: 'Không có ghi chú'"></p>
+	</div>
+
+	<!-- Danh sách sản phẩm -->
+	<h4 class="mt-4">📋 Danh sách sản phẩm</h4>
+	<table class="table table-bordered mt-2">
+		<thead class="table-light text-center">
+			<tr>
+				<th>#</th>
+				<th>Sản phẩm</th>
+				<th>Hình ảnh</th>
+				<th>Giá</th>
+				<th>Số lượng</th>
+				<th>Thành tiền</th>
+			</tr>
+		</thead>
+		<tbody th:each="item, stat : ${order.orderDetails}"
+			class="text-center">
+			<tr>
+				<td th:text="${stat.index + 1}"></td>
+				<td th:text="${item.product.name}"></td> 
+				<td><img th:src="@{'/uploads/' + ${item.product.imageUrl}}"
+					onerror="this.onerror=null; this.src='/images/default.png';"
+					th:attr="alt=${item.product.name}" class="rounded"
+					style="width: 45px; height: 45px; object-fit: cover;" /></td>
+
+				<td
+					th:text="${#numbers.formatDecimal(item.price, 0, 'POINT', 0, 'COMMA')} + ' đ'"></td>
+				<td th:text="${item.quantity}"></td>
+				<td
+					th:text="${#numbers.formatDecimal(item.price * item.quantity, 0, 'POINT', 0, 'COMMA')} + ' đ'"></td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th colspan="4" class="text-end">Tổng cộng:</th>
+				<th
+					th:text="${#numbers.formatDecimal(totalAmount, 0, 'POINT', 0, 'COMMA')} + ' đ'"
+					class="text-center text-danger fw-bold"></th>
+			</tr>
+		</tfoot>
+	</table>
+
+	<div class="mt-3">
+		<a th:href="@{/admin/orders}" class="btn btn-secondary">⬅ Quay lại
+			danh sách</a>
+	</div>
+
+</div>
+</html>

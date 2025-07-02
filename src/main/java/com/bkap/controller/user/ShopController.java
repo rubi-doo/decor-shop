@@ -41,12 +41,15 @@ public class ShopController {
 	}
 
 	// Trang chủ
-	@GetMapping("/")
-	public String home(Model model) {
+	@GetMapping("/product")
+	public String product(Model model) {
 		List<Category> parentCategories = categoryService.getAllParentCategoriesWithChildren();
 		model.addAttribute("categories", parentCategories);
 		
+		 List<Product> latestProducts = productService.getLatestProducts();
+		    model.addAttribute("latestProducts", latestProducts);
 		return "layout/user-layout";
+
 	}
 
 	@GetMapping("/category/{id}")

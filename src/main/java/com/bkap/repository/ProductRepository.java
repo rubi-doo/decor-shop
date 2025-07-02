@@ -24,6 +24,9 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
 	Page<Product> findByCategory(Category category, Pageable pageable);
 
 	Page<Product> findByCategoryIn(List<Category> categories, Pageable pageable);
+	
+	List<Product> findTop4ByOrderByCreatedAtDesc();
+
 
 
 }

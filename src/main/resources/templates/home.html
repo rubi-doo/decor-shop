@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/user-layout}">
+
+<head>
+<title>Trang Chủ</title>
+</head>
+
+<body>
+	<section layout:fragment="content">
+		<!-- Banner hoặc Breadcrumb nếu cần -->
+		<section class="breadcrumb breadcrumb_bg">
+			<div class="container">
+				<div class="row justify-content-center">
+					<div class="col-lg-8">
+						<div class="breadcrumb_iner">
+							<div class="breadcrumb_iner_item">
+								<h2>Trang chủ</h2>
+								<p>
+									<a th:href="@{/}">Trang chủ</a>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Sản phẩm mới nhất -->
+		<section class="latest_product_area section_padding">
+			<div class="container">
+				<div class="section_tittle">
+					<h2>Sản phẩm mới nhất</h2>
+				</div>
+				<div class="row latest_product_inner">
+					<div class="col-lg-3 col-sm-6" th:each="p : ${latestProducts}">
+						<div class="single_product_item">
+							<img th:src="@{'/uploads/' + ${p.imageUrl}}" alt=""
+								onerror="this.onerror=null; this.src='/images/default.png'" />
+							<div class="single_product_text">
+								<h4 th:text="${p.name}">Tên sản phẩm</h4>
+								<h3
+									th:text="${#numbers.formatDecimal(p.salePrice != null ? p.salePrice : p.price, 0, 'COMMA', 0, 'NONE')} + ' VND'">0
+									VND</h3>
+
+								<a href="javascript:void(0)"
+									th:attr="onclick=|addToCart(${p.id}, '${p.name}', '${p.imageUrl}', 1, ${p.price})|"
+									class="btn btn-outline-primary btn-sm"> + Thêm vào giỏ <i
+									class="fa fa-shopping-cart"></i>
+								</a>
+
+							</div>
+						</div>
+					</div>
+
+					<div th:if="${#lists.isEmpty(latestProducts)}"
+						class="col-12 text-center">
+						<p>Chưa có sản phẩm nào được đăng gần đây.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+	</section>
+	
+	
+</body>
+</html>

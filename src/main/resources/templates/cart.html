@@ -1,15 +1,13 @@
-<!doctype html>
-<html lang="zxx"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Decor Project</title>
-    <link rel="stylesheet" th:href="@{/user/css/bootstrap.min.css}" />
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+<!-- Bootstrap CSS v5.2.1 -->
+<link rel="stylesheet" th:href="@{/user/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/user/css/animate.css}" />
     <link rel="stylesheet" th:href="@{/user/css/owl.carousel.min.css}" />
     <link rel="stylesheet" th:href="@{/user/css/all.css}" />
@@ -18,38 +16,58 @@
     <link rel="stylesheet" th:href="@{/user/css/magnific-popup.css}" />
     <link rel="stylesheet" th:href="@{/user/css/slick.css}" />
     <link rel="stylesheet" th:href="@{/user/css/style.css}" />
-    <link rel="stylesheet" th:href="@{/user/css/custom.css}" />
-    
+
+
+
+
 
 </head>
-
 <body>
-    <!-- Header/Navbar -->
-    <header th:replace="~{user/fragment/header :: header}"></header>
+<header th:replace="~{user/fragment/header :: header}"></header>
+	<br>
+	<div class="container my-5">
+		<br>
+		<br>
+		<h3 class="mb-4 text-center">Giỏ Hàng</h3>
 
-     <!-- Banner Section (Optional override per page) -->
-    <!-- <section th:replace="user/fragment/banner :: banner"></section> -->
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>Sản phẩm</th>
+					<th>Hình ảnh</th>
+					<th>Số lượng</th>
+					<th>Đơn giá</th>
+					<th>Thao tác</th>
+				</tr>
+			</thead>
+			<tbody id="cartTableBody"></tbody>
+		</table>
+		<div class="d-flex justify-content-between align-items-center">
+			<a href="/" class="btn btn-secondary">← Tiếp tục mua hàng</a>
+			<h4 class="mb-0">
+				Tổng tiền: <span id="cartTotal">0 VNĐ</span>
+			</h4>
+			<a href="/checkout" class="btn btn-success">Thanh toán</a>
+		</div>
 
-     <!-- Main Content -->
-    <main>
-        <!-- Content -->
-        <div class="content-wrapper">
-          <section layout:fragment="content">
-            <!-- Nội dung của từng page cụ thể sẽ được render tại đây -->
-          </section>
-    </main>
-   
-     <!-- Footer -->
+	</div>
+	<br>
+	<br>
+
+	     <!-- Footer -->
     <footer th:replace="~{user/fragment/footer :: footer}"></footer>
-    <script src="/js/home.js"></script>
-    <script th:src="@{/user/js/jquery-1.12.1.min.js}"></script>
+    <script src="/js/cart.js"></script>
+	
+
+
+	<script th:src="@{/user/js/jquery-1.12.1.min.js}"></script>
     <script th:src="@{/user/js/popper.min.js}"></script>
     <script th:src="@{/user/js/bootstrap.min.js}"></script>
     <script th:src="@{/user/js/jquery.magnific-popup.js}"></script>
     <script th:src="@{/user/js/swiper.min.js}"></script>
     <script th:src="@{/user/js/masonry.pkgd.js}"></script>
     <script th:src="@{/user/js/owl.carousel.min.js}"></script>
-    <!-- <script th:src="@{/user/js/jquery.nice-select.min.js}"></script> -->
+    <script th:src="@{/user/js/jquery.nice-select.min.js}"></script>
     <script th:src="@{/user/js/slick.min.js}"></script>
     <script th:src="@{/user/js/jquery.counterup.min.js}"></script>
     <script th:src="@{/user/js/waypoints.min.js}"></script>
@@ -60,8 +78,5 @@
     <script th:src="@{/user/js/mail-script.js}"></script>
     <script th:src="@{/user/js/custom.js}"></script>
 
-    
-    
 </body>
-
 </html>

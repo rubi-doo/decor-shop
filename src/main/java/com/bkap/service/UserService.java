@@ -64,4 +64,7 @@ public UserDetails loadUserByUsername(String email) throws UsernameNotFoundExcep
         user.setCreatedAt(LocalDateTime.now());
         userRepository.save(user);
     }
+    public Optional<User> findByUserMail(String name) {
+        return userRepository.findByEmail(name);
+    }
 }
