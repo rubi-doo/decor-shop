@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.bkap.cart.CartItem;
 import com.bkap.dto.CartItemDTO;
@@ -43,10 +44,15 @@ public class PaymentController {
 	    private OrderService  orderService;
 
 	    @GetMapping("/checkout")
-	    public String showCheckoutPage(HttpSession session, Model model) {
+	    public String showCheckoutPage(HttpSession session, Model model, Principal principal,  RedirectAttributes redirectAttributes) {
+	        // Nếu chưa đăng nhập (principal là null) thì redirect sang trang đăng nhập
+	        if (principal == null) {
+	        	redirectAttributes.addFlashAttribute("errorMessage", "Vui lòng đăng nhập để thanh toán.");
+	            return "redirect:/login"; // hoặc thay bằng trang bạn muốn
+	        }
+
 	        List<CartItem> cartItems = cartService.getCart(session);
-	        
-	        // Chuyển đổi CartItem sang CartItemDTO và thêm thông tin sản phẩm
+
 	        List<CartItemDTO> cartItemDTOs = cartItems.stream().map(item -> {
 	            CartItemDTO dto = new CartItemDTO();
 	            dto.setProductId(item.getProductId());
@@ -54,7 +60,6 @@ public class PaymentController {
 	            return dto;
 	        }).collect(Collectors.toList());
 
-	        // Thêm thông tin sản phẩm (tên, giá) để hiển thị
 	        List<CartItemDisplay> cartItemDisplays = cartItems.stream().map(item -> {
 	            Product product = productService.getProductById(item.getProductId()); 
 	            return new CartItemDisplay(
@@ -66,7 +71,7 @@ public class PaymentController {
 	        }).collect(Collectors.toList());
 
 	        model.addAttribute("cartItems", cartItemDisplays);
-	        model.addAttribute("cartItemsJson", cartItemDTOs); // Dùng cho JavaScript
+	        model.addAttribute("cartItemsJson", cartItemDTOs); 
 	        model.addAttribute("total", cartService.getTotal(session));
 	        return "checkout";
 	    }
@@ -82,7 +87,7 @@ public class PaymentController {
 	   
 	    @GetMapping("/order-confirmed")
 	    public String orderConfirmedPage() {
-	        return "order-confirmed"; // file HTML đơn giản
+	        return "order-confirmed"; 
 	    }
 
 	    

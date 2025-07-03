@@ -2,6 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout/admin-layout}">
+	
+	 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Hoặc Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/a">
 <head>
 <title>Danh Sách Sản Phẩm</title>
 </head>
@@ -10,73 +14,97 @@
 		<div class="container-xxl flex-grow-1 container-p-y">
 			<div class="container-xxl container-p-y">
 				<h4 class="fw-bold py-3 mb-4">
-					<span class="text-muted fw-light">Quản Lý Sản Phẩm/</span> Danh Sách Sản Phẩm
+					<span class="text-muted fw-light">Quản Lý Sản Phẩm/</span> Danh
+					Sách Sản Phẩm
 				</h4>
-				<div class="card">
-					<div
-						class="card-header d-flex justify-content-between align-items-center">
-						<h5 class="mb-0">Danh Sách Sản Phẩm</h5>
+				<div
+					class="card-header d-flex flex-wrap justify-content-between align-items-center gap-3">
+					<h5 class="mb-0">Danh Sách Sản Phẩm</h5>
+					<div class="d-flex flex-wrap gap-3">
+						<form method="get" action="#"
+							class="d-flex flex-wrap gap-3 align-items-center">
+							<div style="width: 200px;">
+								<input type="text" name="keyword" th:value="${keyword}"
+									class="form-control" placeholder="Tìm kiếm sản phẩm...">
+							</div>
+							<div style="width: 180px;">
+								<select name="sort" class="form-select">
+									<option value="">-- Sắp xếp theo --</option>
+									<option value="priceAsc" th:selected="${sort == 'priceAsc'}">Giá
+										tăng dần</option>
+									<option value="priceDesc" th:selected="${sort == 'priceDesc'}">Giá
+										giảm dần</option>
+									<option value="nameAsc" th:selected="${sort == 'nameAsc'}">Tên
+										A-Z</option>
+									<option value="nameDesc" th:selected="${sort == 'nameDesc'}">Tên
+										Z-A</option>
+								</select>
+							</div>
+							<button type="submit" class="btn btn-primary">
+								<i class="bx bx-search"></i>
+							</button>
+						</form>
 						<a th:href="@{/admin/products/create}" class="btn btn-primary">
 							<i class="bx bx-plus me-1"></i> Thêm Sản Phẩm
 						</a>
 					</div>
-					<div class="card-body table-responsive">
-						<table class="table table-hover align-middle">
-							<thead class="table-light">
-								<tr>
-									<th>#</th>
-									<th>Tên</th>
-									<th>Giá</th>
-									<th>Số lượng</th>
-									<th>Danh Mục</th>
-									<th>Ảnh</th>
-									<th>Trạng Thái</th>
-									<th class="text-center">Thao tác</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr th:each="product, stat : ${products}">
-									<td th:text="${stat.count}">1</td>
-									<td th:text="${product.name}">SP</td>
-									<td class="price" th:text="${product.price}" data-currency="đ">10.000</td>
-									<td th:text="${product.quantity}">50</td>
-									<td th:text="${product.category.name}">Danh Mục</td>
-									<td><img th:src="@{'/uploads/' + ${product.imageUrl}}"
-										onerror="this.onerror=null; this.src='/images/' + this.getAttribute('data-fallback');"
-										th:attr="alt=${product.name}, data-fallback=${product.imageUrl}"
-										class="rounded"
-										style="width: 45px; height: 45px; object-fit: cover;" /></td>
-									<td><span
-										th:classappend="${product.status == 1} ? 'badge bg-success' : 'badge bg-secondary'"
-										th:text="${product.status == 1 ? 'Active' : 'Inactive'}">
-									</span></td>
-									<td class="text-center">
-										<div class="d-inline-flex">
-											<!-- th:href="@{/admin/products/view/{id}(id=${product.id})}" -->
-											<a href="#" class="btn btn-icon btn-info btn-sm me-1"
-												title="View"> <i class="bx bx-show"></i>
-											</a> <a th:href="@{/admin/products/edit/{id}(id=${product.id})}"
-												class="btn btn-icon btn-warning btn-sm me-1" title="Edit">
-												<i class="bx bx-edit"></i>
-											</a> <a
-												th:href="@{/admin/products/delete/{id}(id=${product.id})}"
-												class="btn btn-icon btn-danger btn-sm"
-												onclick="return confirm('Are you sure to delete this product?');"
-												title="Delete"> <i class="bx bx-trash"></i>
-											</a>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-
-					</div>
-					<!-- Pagination-->
-					<div
-						th:replace="admin/fragment/pagination :: pager(page=${page}, baseUrl='/admin/products')">Phân
-						trang</div>
 				</div>
+				<div class="card-body table-responsive">
+					<table class="table table-hover align-middle">
+						<thead class="table-light">
+							<tr>
+								<th>#</th>
+								<th>Tên</th>
+								<th>Giá</th>
+								<th>Số lượng</th>
+								<th>Danh Mục</th>
+								<th>Ảnh</th>
+								<th>Trạng Thái</th>
+								<th class="text-center">Thao tác</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="product, stat : ${products}">
+								<td th:text="${stat.count}">1</td>
+								<td th:text="${product.name}">SP</td>
+								<td class="price" th:text="${product.price}" data-currency="đ">10.000</td>
+								<td th:text="${product.quantity}">50</td>
+								<td th:text="${product.category.name}">Danh Mục</td>
+								<td><img th:src="@{'/uploads/' + ${product.imageUrl}}"
+									onerror="this.onerror=null; this.src='/images/' + this.getAttribute('data-fallback');"
+									th:attr="alt=${product.name}, data-fallback=${product.imageUrl}"
+									class="rounded"
+									style="width: 45px; height: 45px; object-fit: cover;" /></td>
+								<td><span
+									th:classappend="${product.status == 1} ? 'badge bg-success' : 'badge bg-secondary'"
+									th:text="${product.status == 1 ? 'Active' : 'Inactive'}">
+								</span></td>
+								<td class="text-center">
+									<div class="d-inline-flex">
+										<!-- th:href="@{/admin/products/view/{id}(id=${product.id})}" -->
+										<a href="#" class="btn btn-icon btn-info btn-sm me-1"
+											title="View"> <i class="bx bx-show"></i>
+										</a> <a th:href="@{/admin/products/edit/{id}(id=${product.id})}"
+											class="btn btn-icon btn-warning btn-sm me-1" title="Edit">
+											<i class="bx bx-edit"></i>
+										</a> <a th:href="@{/admin/products/delete/{id}(id=${product.id})}"
+											class="btn btn-icon btn-danger btn-sm"
+											onclick="return confirm('Are you sure to delete this product?');"
+											title="Delete"> <i class="bx bx-trash"></i>
+										</a>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+				<!-- Pagination-->
+				<div
+					th:replace="admin/fragment/pagination :: pager(page=${page}, baseUrl='/admin/products')">Phân
+					trang</div>
 			</div>
+		</div>
 	</section>
 </body>
 </html>

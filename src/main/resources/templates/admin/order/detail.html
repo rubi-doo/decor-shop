@@ -31,7 +31,8 @@
 					th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}"></span>
 			</p>
 			<p>
-				<strong>Phương thức:</strong> <span th:text="${order.paymentMethod}"></span>
+				<strong>Phương thức TT:</strong> <span
+					th:text="${order.paymentMethod}"></span>
 			</p>
 			<p>
 				<strong>Trạng thái thanh toán:</strong> <span
@@ -69,7 +70,7 @@
 			class="text-center">
 			<tr>
 				<td th:text="${stat.index + 1}"></td>
-				<td th:text="${item.product.name}"></td> 
+				<td th:text="${item.product.name}"></td>
 				<td><img th:src="@{'/uploads/' + ${item.product.imageUrl}}"
 					onerror="this.onerror=null; this.src='/images/default.png';"
 					th:attr="alt=${item.product.name}" class="rounded"
@@ -84,12 +85,14 @@
 		</tbody>
 		<tfoot>
 			<tr>
-				<th colspan="4" class="text-end">Tổng cộng:</th>
+				<th colspan="5" class="text-center text-end text-uppercase">Tổng
+					cộng:</th>
 				<th
 					th:text="${#numbers.formatDecimal(totalAmount, 0, 'POINT', 0, 'COMMA')} + ' đ'"
 					class="text-center text-danger fw-bold"></th>
 			</tr>
 		</tfoot>
+
 	</table>
 
 	<div class="mt-3">

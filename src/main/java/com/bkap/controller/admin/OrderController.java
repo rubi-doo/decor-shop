@@ -3,6 +3,10 @@ package com.bkap.controller.admin;
 import com.bkap.entity.Order;
 import com.bkap.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +27,18 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping
-    public String showOrderList(Model model) {
-        List<Order> orders = orderService.getAllOrders();
-        model.addAttribute("orders", orders);
-        return "admin/order/list"; // 
+    public String showOrderList(@RequestParam(defaultValue = "0") int page,
+                                @RequestParam(defaultValue = "5") int size,
+                                Model model) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("orderDate").descending());
+        Page<Order> orderPage = orderService.getAllOrders(pageable);
+
+        model.addAttribute("orders", orderPage.getContent()); // đơn hàng trong trang hiện tại
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", orderPage.getTotalPages());
+        model.addAttribute("pageSize", size);
+
+        return "admin/order/list";
     }
     @PostMapping("/delete")
 	public String deleteOrder(@RequestParam("id") Long id, RedirectAttributes redirect) {

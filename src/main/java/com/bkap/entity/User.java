@@ -15,6 +15,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import com.bkap.entity.OnCreate;
+import com.bkap.controller.user.OnUpdate;
+
 @Entity
 @Table(name = "decor_user")
 public class User {
@@ -32,7 +35,7 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    @NotBlank(message = "Password is required")
+    @NotBlank(message = "Password is required", groups = OnCreate.class)
     private String password;
 
 	@NotBlank(message = "Phone is required")
