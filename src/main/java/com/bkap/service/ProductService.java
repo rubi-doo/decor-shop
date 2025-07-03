@@ -30,7 +30,9 @@ public class ProductService {
     }
 
     public Product save(Product product) {
-        return productRepository.save(product);
+    	Product saved = productRepository.save(product);
+        System.out.println("Đã lưu sản phẩm: " + saved);
+        return saved;
     }
 
     public Product findById(Long id) {
@@ -92,4 +94,8 @@ public class ProductService {
     public Product getProductById(Long id) {
         return productRepository.findById(id).orElse(null);
     }
+
+	public boolean existsByProductCode(String productCode) {
+		return productRepository.existsByProductCode(productCode);
+	}
 }

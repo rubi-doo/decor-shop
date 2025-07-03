@@ -1,0 +1,33 @@
+<!-- delete-modal.html -->
+<div th:fragment="deleteModal">
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xác nhận xóa</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+      </div>
+      <div class="modal-body">
+        Bạn có chắc chắn muốn xóa mục này?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+        <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Xóa</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const deleteButtons = document.querySelectorAll("[data-delete-url]");
+    const confirmBtn = document.getElementById("confirmDeleteBtn");
+    deleteButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        const url = button.getAttribute("data-delete-url");
+        confirmBtn.setAttribute("href", url);
+      });
+    });
+  });
+</script>
+</div>

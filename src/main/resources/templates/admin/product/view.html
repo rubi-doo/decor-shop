@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/admin-layout}">
+<head>
+    <title>Chi tiết sản phẩm</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="container-xxl container-p-y">
+        <h4 class="fw-bold py-3 mb-4">
+            <span class="text-muted fw-light">Sản phẩm /</span> Chi tiết sản phẩm
+        </h4>
+        <div class="card">
+            <div class="card-body row">
+                <!-- Cột ảnh -->
+                <div class="col-md-4">
+                    <img th:src="@{'/uploads/' + ${product.imageUrl}}"
+                         onerror="this.onerror=null; this.src='/images/default.jpg';"
+                         alt="Ảnh sản phẩm"
+                         class="img-fluid rounded border"
+                         style="max-width:100%; height:auto;">
+                </div>
+
+                <!-- Cột thông tin -->
+                <div class="col-md-8">
+                    <p><strong>Tên:</strong> <span th:text="${product.name}">-</span></p>
+                    <p><strong>Mã:</strong> <span th:text="${product.productCode ?: '-'}">-</span></p>
+                    <p><strong>Giá:</strong> <span th:text="${product.price != null ? #numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'NONE') + ' VND' : '-'}">-</span></p>
+                    <p><strong>Giá Khuyển Mãi:</strong> <span th:text="${product.salePrice != null ? #numbers.formatDecimal(product.salePrice, 0, 'COMMA', 0, 'NONE') + ' VND' : '-'}">-</span></p>
+                    <p><strong>Số lượng:</strong> <span th:text="${product.quantity}">-</span></p>
+                    <p><strong>Danh mục:</strong> <span th:text="${product.category?.name ?: '-'}">-</span></p>
+                    <p><strong>Thương hiệu:</strong> <span th:text="${product.brand ?: '-'}">-</span></p>
+                    <p><strong>Kích thước:</strong> <span th:text="${product.size ?: '-'}">-</span></p>
+                    <p><strong>Chất liệu:</strong> <span th:text="${product.material ?: '-'}">-</span></p>
+                    <p><strong>Màu sắc:</strong> <span th:text="${product.color ?: '-'}">-</span></p>
+                    <p><strong>Mô tả:</strong> <span th:text="${product.description ?: '-'}">-</span></p>
+                    <a th:href="@{/admin/products}" class="btn btn-secondary mt-3">Quay lại danh sách</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
