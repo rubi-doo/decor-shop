@@ -1,0 +1,77 @@
+ <html xmlns:th="http://www.thymeleaf.org">
+ <header class="navbar sticky-top flex-md-nowrap" th:fragment="header">
+        <div class="col-md-3 col-lg-3 me-0 px-3 fs-6">
+            <a class="navbar-brand" th:href="@{/}">
+                <img th:src="@{/user/img/logo.png}" alt="logo">
+            </a>
+        </div>
+
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <form class="custom-form header-form ms-lg-3 ms-md-3 me-lg-auto me-md-auto order-2 order-lg-0 order-md-0"
+            action="#" method="get" role="form">
+            <input class="form-control" name="search" type="text" placeholder="Search" aria-label="Search">
+        </form>
+
+        <div class="navbar-nav me-lg-2">
+            <div class="nav-item text-nowrap d-flex align-items-center">
+                <div class="dropdown px-3">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        >
+                        <img src="images/medium-shot-happy-man-smiling.jpg" class="profile-image img-fluid me-2" alt=""
+                            style="margin-left: -180px;">
+                        <span sec:authentication="principal.name"
+                        style="display: inline-block; max-width: 160px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis"
+                        ></span>
+                    </a>
+
+                    <ul class="dropdown-menu bg-white shadow">
+                        <li>
+                            <div class="dropdown-menu-profile-thumb d-flex">
+                                <img src="images/medium-shot-happy-man-smiling.jpg" class="profile-image img-fluid me-3"
+                                    alt="">
+
+                                <div class="d-flex flex-column">
+                                    <small sec:authentication="principal.name">Thomas</small>
+                                    <a href="#" sec:authentication="name">thomas@site.com</a>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="profile.html">
+
+                                Profile
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item"  th:href="@{/profile/update}">
+
+                                Update Profile
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="help-center.html">
+
+                                Help
+                            </a>
+                        </li>
+
+                        <li class="border-top mt-3 pt-2 mx-4">
+                            <a class="dropdown-item ms-0 me-0" th:href="@{/logout}">
+
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
