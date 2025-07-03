@@ -26,23 +26,19 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Name is required")
-    @Size(min = 6, max = 20, message = "Name must be between 6 and 20 characters")
+   
     private String name;
 
-	@NotBlank(message = "Email is required")
-    @Email(message = "Email should be valid")
-    @Column(unique = true)
+	
     private String email;
 
-    @NotBlank(message = "Password is required", groups = OnCreate.class)
+   
     private String password;
 
-	@NotBlank(message = "Phone is required")
-    @Pattern(regexp = "^\\d{10}$", message = "Phone number must be 10 digits")
+	
     private String phone;
 	
-	@NotBlank(message = "Address is required")
+	
     private String address;
 
     private String role;

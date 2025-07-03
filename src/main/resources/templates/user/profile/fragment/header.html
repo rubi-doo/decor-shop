@@ -25,7 +25,7 @@
                         >
                         <img src="images/medium-shot-happy-man-smiling.jpg" class="profile-image img-fluid me-2" alt=""
                             style="margin-left: -180px;">
-                        <span sec:authentication="principal.name"
+                        <span th:text="${user.name}"
                         style="display: inline-block; max-width: 160px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis"
                         ></span>
                     </a>
@@ -37,7 +37,7 @@
                                     alt="">
 
                                 <div class="d-flex flex-column">
-                                    <small sec:authentication="principal.name">Thomas</small>
+                                    <small th:text="${user.name}">Thomas</small>
                                     <a href="#" sec:authentication="name">thomas@site.com</a>
                                 </div>
                             </div>

@@ -24,11 +24,10 @@
 						<h6 class="mb-4">Update User</h6>
 
 						<form class="custom-form profile-form" th:action="@{/profile}"
-							method="post" role="form" th:object="${user}">
+							method="post" role="form" th:object="${updateUser}">
 							<input type="hidden" th:field="*{id}"> <input
 								class="form-control" type="text" th:field="*{name}">
-							<div th:if="${#fields.hasErrors('name')}" class="text-danger"
-								th:errors="*{name}"></div>
+								<div th:if="${#fields.hasErrors('name')}" class="text-danger" th:errors="*{name}"></div>
 							<input class="form-control" type="email" th:field="*{email}"
 								readonly> <input class="form-control" type="text"
 								th:field="*{phone}">

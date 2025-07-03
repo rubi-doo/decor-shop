@@ -52,7 +52,7 @@
                             <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    👤 <span sec:authentication="principal.name"></span>
+                                    👤 <span th:text="${user.name}"></span>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="userDropdown">
                                     <a class="dropdown-item" th:href="@{/profile}">Thông tin tài khoản</a>

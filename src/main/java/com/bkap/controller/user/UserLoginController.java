@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.bkap.dto.RegisterUserDto;
 import com.bkap.entity.User;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -37,7 +38,7 @@ public class UserLoginController {
     }
 
     @PostMapping("/register")
-    public String check_register(@Valid @ModelAttribute("user")  User user,
+    public String check_register(@Valid @ModelAttribute("user")  RegisterUserDto userDto,
         BindingResult result,
         Model model) {
 
@@ -46,7 +47,7 @@ public class UserLoginController {
         }
 
         try {
-            userService.registerUser(user);
+            userService.registerUser(userDto);
             return "redirect:/login?success";
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
