@@ -1,0 +1,8 @@
+<!-- admin/fragment/category-path.html -->
+<span th:fragment="categoryPath(category)">
+  <span th:if="${category.parent != null}">
+    <span th:insert="~{admin/fragment/category-path :: categoryPath(category=${category.parent})}" />
+    <span> &raquo; </span>
+  </span>
+  <span th:text="${category.name}">Danh mục</span>
+</span>
