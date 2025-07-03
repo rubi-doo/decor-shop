@@ -67,4 +67,5 @@ public UserDetails loadUserByUsername(String email) throws UsernameNotFoundExcep
     public Optional<User> findByUserMail(String name) {
         return userRepository.findByEmail(name);
     }
+    
 }

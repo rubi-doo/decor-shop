@@ -163,9 +163,10 @@ public class OrderService {
             .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
     
-    public List<Order> getOrdersByUserId(Long userId) {
-        return orderRepository.findByUserIdOrderByOrderDateDesc(userId);
+    public Page<Order> getOrdersByUserId(Long userId, Pageable pageable) {
+        return orderRepository.findByUserIdOrderByOrderDateDesc(userId, pageable);
     }
+
 
     public Order getOrderByIdAndUserId(Long orderId, Long userId) throws IllegalAccessException {
         Order order = orderRepository.findById(orderId)
