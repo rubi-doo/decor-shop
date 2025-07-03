@@ -48,6 +48,7 @@ public class ProfileController {
 
 	@GetMapping({ "", "/" })
 	public String main(Model model, Authentication auth) {
+        
 		if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
 			String email = auth.getName();
 			User user = userRepository.findByEmail(email).orElseThrow();
