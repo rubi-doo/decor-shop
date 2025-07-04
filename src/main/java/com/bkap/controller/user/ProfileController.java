@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 
 import com.bkap.dto.ChangePasswordForm;
 import com.bkap.dto.UpdateUserDto;
@@ -27,6 +28,8 @@ import com.bkap.repository.UserRepository;
 import com.bkap.service.OrderService;
 import com.bkap.service.UserService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
@@ -66,7 +69,7 @@ public class ProfileController {
             model.addAttribute("error", "Vui lòng đăng nhập để truy cập trang cá nhân.");
             return "redirect:/login";
         } // Hoặc bạn có thể trả về một trang thông báo lỗi
-        // HTML này sẽ dùng layout:decorate
+          // HTML này sẽ dùng layout:decorate
     }
 
     @GetMapping("/update")
@@ -74,25 +77,25 @@ public class ProfileController {
         if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
             String email = auth.getName();
             User user = userRepository.findByEmail(email).orElseThrow();
-            
-        UpdateUserDto dto = new UpdateUserDto();
-        dto.setId(user.getId());
-        dto.setName(user.getName());
-        dto.setPhone(user.getPhone());
-        dto.setAddress(user.getAddress());
-        dto.setEmail(user.getEmail());
 
-        model.addAttribute("updateUser", dto);
+            UpdateUserDto dto = new UpdateUserDto();
+            dto.setId(user.getId());
+            dto.setName(user.getName());
+            dto.setPhone(user.getPhone());
+            dto.setAddress(user.getAddress());
+            dto.setEmail(user.getEmail());
+
+            model.addAttribute("updateUser", dto);
         }
         return "user/profile/update";
     }
 
     @PostMapping("")
-    public String updateProfile( @Valid @ModelAttribute("updateUser") UpdateUserDto updatedUserDto,
+    public String updateProfile(@Valid @ModelAttribute("updateUser") UpdateUserDto updatedUserDto,
             BindingResult bindingResult, Authentication auth, RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
-        return "user/profile/update";
-    }
+            return "user/profile/update";
+        }
         String email = auth.getName();
         User user = userRepository.findByEmail(email).orElseThrow();
 
@@ -171,16 +174,18 @@ public class ProfileController {
         }
     }
 
-   @GetMapping("/change-password")
-public String changePasswordPage(Model model) {
-    model.addAttribute("changePasswordForm", new ChangePasswordForm());
-    return "user/profile/change-password"; // hoặc đường dẫn tương ứng
-}
+    @GetMapping("/change-password")
+    public String changePasswordPage(Model model) {
+        model.addAttribute("changePasswordForm", new ChangePasswordForm());
+        return "user/profile/change-password"; // hoặc đường dẫn tương ứng
+    }
 
     @PostMapping("/change-password")
 public String handleChangePassword(@Valid @ModelAttribute("changePasswordForm") ChangePasswordForm form,
                                    BindingResult result,
                                    Authentication auth,
+                                   HttpServletRequest request,
+                                   HttpServletResponse response,
                                    RedirectAttributes redirect) {
 
     if (result.hasErrors()) {
@@ -201,11 +206,17 @@ public String handleChangePassword(@Valid @ModelAttribute("changePasswordForm") 
         return "user/profile/change-password";
     }
 
-    // Cập nhật
+    // Cập nhật mật khẩu mới
     user.setPassword(passwordEncoder.encode(form.getNewPassword()));
     userRepository.save(user);
-    redirect.addFlashAttribute("successMessage", "Đổi mật khẩu thành công!");
 
-    return "redirect:/profile/change-password";
+    // Logout người dùng
+    new SecurityContextLogoutHandler().logout(request, response, auth);
+
+    // Gửi thông báo nếu cần
+    redirect.addFlashAttribute("successMessage", "Đổi mật khẩu thành công. Vui lòng đăng nhập lại.");
+
+    // Chuyển về trang login
+    return "redirect:/login";
 }
 }

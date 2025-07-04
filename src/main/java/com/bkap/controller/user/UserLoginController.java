@@ -3,6 +3,7 @@ import com.bkap.service.UserService;
 
 import jakarta.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class UserLoginController {
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
+
 
 
     UserLoginController(UserService userService) {
@@ -26,10 +29,10 @@ public class UserLoginController {
     }
     
 
-    @GetMapping("/login")
-    public String Login() {
-	    return "login";
-    }
+   @GetMapping("/login")
+public String loginPage() {
+    return "login"; 
+}
 
     @GetMapping("/register")
     public String Register(Model model) {
