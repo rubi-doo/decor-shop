@@ -33,12 +33,12 @@ public class UserLoginController {
 
     @GetMapping("/register")
     public String Register(Model model) {
-        model.addAttribute("user", new User());
+        model.addAttribute("registerDto", new RegisterUserDto());
 	    return "register";
     }
 
     @PostMapping("/register")
-    public String check_register(@Valid @ModelAttribute("user")  RegisterUserDto userDto,
+    public String check_register(@Valid @ModelAttribute("registerDto")  RegisterUserDto userDto,
         BindingResult result,
         Model model) {
 
