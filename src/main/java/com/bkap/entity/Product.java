@@ -14,6 +14,7 @@ public class Product {
     private Long id;
 	
 	@NotBlank(message = "Tên sản phẩm không được để trống")
+	@Size(max = 255, message="Tên sản phẩm không được vượt quá 255 ký tự")
 	@Column(nullable = false, unique = true)
 	private String name;
 	

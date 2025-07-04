@@ -69,6 +69,15 @@ public class CategoryService {
 		return categoryRepository.findByParentId(parentId);
 	}
 
+	public boolean existsByName(String name) {
+	    return categoryRepository.existsByNameIgnoreCase(name.trim());
+	}
+
+	public List<Category> findAllParents() {
+	    return categoryRepository.findAllParents();
+	}
+
+
 	
 }
 	
