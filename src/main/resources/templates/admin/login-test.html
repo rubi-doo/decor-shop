@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Đăng nhập quản trị</title>
+
+  <!-- Sneat core CSS -->
+  <link rel="stylesheet" th:href="@{/admin/assets/vendor/css/core.css}" />
+  <link rel="stylesheet" th:href="@{/admin/assets/vendor/css/theme-default.css}" />
+  <link rel="stylesheet" th:href="@{/admin/assets/css/demo.css}" />
+  <link rel="stylesheet" th:href="@{/admin/assets/vendor/css/pages/page-auth.css}" />
+  <link rel="stylesheet" th:href="@{/admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css}" />
+
+  <!-- JS helpers -->
+  <script th:src="@{/admin/assets/vendor/js/helpers.js}"></script>
+  <script th:src="@{/admin/assets/js/config.js}"></script>
+</head>
+
+<body>
+  <div class="container-xxl">
+    <div class="authentication-wrapper authentication-basic container-p-y">
+      <div class="authentication-inner">
+        <div class="card">
+          <div class="card-body">
+            <!-- Logo -->
+            <div class="app-brand justify-content-center mb-3">
+              <a href="#" class="app-brand-link gap-2">
+                <span class="app-brand-text demo text-body fw-bolder">Home Decor</span>
+              </a>
+            </div>
+
+            <h4 class="mb-2 text-center">Đăng nhập</h4>
+            <p class="mb-4 text-center">Vui lòng nhập email và mật khẩu</p>
+
+            <!-- Thông báo -->
+            <div th:if="${param.error}" class="alert alert-danger text-center">Sai email hoặc mật khẩu!</div>
+            <div th:if="${param.logout}" class="alert alert-success text-center">Đăng xuất thành công!</div>
+
+            <!-- Form đăng nhập -->
+            <form th:action="@{/admin/login}" method="post" class="mb-3">
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" id="email" name="email" class="form-control" placeholder="Nhập email" required />
+              </div>
+
+              <div class="mb-3 form-password-toggle">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <div class="input-group input-group-merge">
+                  <input type="password" id="password" name="password" class="form-control" placeholder="Nhập mật khẩu" required />
+                  <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <button type="submit" class="btn btn-primary d-grid w-100">Đăng nhập</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script th:src="@{/admin/assets/vendor/libs/jquery/jquery.js}"></script>
+  <script th:src="@{/admin/assets/vendor/libs/popper/popper.js}"></script>
+  <script th:src="@{/admin/assets/vendor/js/bootstrap.js}"></script>
+  <script th:src="@{/admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js}"></script>
+  <script th:src="@{/admin/assets/vendor/js/menu.js}"></script>
+  <script th:src="@{/admin/assets/js/main.js}"></script>
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/user-layout}">
+
+<head>
+    <title>Danh Mục Sản Phẩm</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:src="@{/user/js/jquery.nice-select.min.js}"></script>
+    <style>
+        .product-detail {
+            padding: 50px 0;
+            background: #f9fafb;
+        }
+        .thumbnail img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .product-info {
+            padding: 20px;
+        }
+        .product-info h2 {
+            font-size: 28px;
+            color: #1e3a8a;
+            margin-bottom: 15px;
+        }
+        .product-price {
+            font-size: 24px;
+            color: #f97316;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .product-description {
+            color: #374151;
+            margin-bottom: 20px;
+        }
+        .quantity-input {
+            width: 60px;
+            padding: 5px;
+            margin-right: 10px;
+            border: 1px solid #e5e7eb;
+            border-radius: 5px;
+        }
+        .button-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .add_cart {
+            border: 2px solid #f97316;
+            color: #f97316;
+            background: transparent;
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            position: relative;
+        }
+        .add_cart:hover {
+            background: #f97316;
+            color: #fff;
+        }
+        .add_cart.loading::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #fff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .wishlist-btn {
+            border: none;
+            background: none;
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            padding: 5px;
+            position: relative;
+        }
+        .wishlist-btn i {
+            border: 2px solid #a1a1aa;
+            border-radius: 50%;
+            padding: 5px;
+            color: #a1a1aa;
+        }
+        .wishlist-btn:hover i::after {
+            content: "Thêm vào danh sách yêu thích";
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #374151;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0.9;
+            z-index: 1;
+        }
+        .wishlist-btn.active i {
+            color: #f97316;
+            border-color: #f97316;
+        }
+        .related-products {
+            margin-top: 40px;
+        }
+        .related-products h2 {
+            font-size: 28px;
+            color: #1e3a8a;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .single_product_item {
+            background: #fff;
+            border: 2px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.1);
+        }
+        .single_product_item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.2);
+        }
+        .single_product_item img {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .single_product_text h4 {
+            font-size: 16px;
+            color: #374151;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .single_product_text h3 {
+            font-size: 18px;
+            color: #f97316;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .button-group-related {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .btn-outline-primary-related {
+            border: 2px solid #f97316;
+            color: #f97316;
+            background: transparent;
+            padding: 8px 15px;
+            font-size: 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-primary-related:hover {
+            background: #f97316;
+            color: #fff;
+        }
+        .btn-primary-related {
+            background: #1e3a8a;
+            color: #fff;
+            border: 2px solid #1e3a8a;
+            padding: 8px 15px;
+            font-size: 12px;
+            border-radius: 20px;
+            text-decoration: none;
+        }
+        .btn-primary-related:hover {
+            background: #163a6a;
+            border-color: #163a6a;
+        }
+        @media (max-width: 768px) {
+            .thumbnail img { height: 300px; }
+            .col-md-5, .col-md-7 { flex: 0 0 100%; max-width: 100%; }
+            .button-group { flex-direction: column; }
+            .add_cart, .wishlist-btn { width: 100%; margin-bottom: 10px; }
+            .single_product_item img { height: 150px; }
+        }
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <section class="product-detail" th:if="${product != null}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="thumbnail">
+                            <img th:src="@{'/uploads/' + ${product.imageUrl}}" 
+                                 th:alt="${product.name != null ? product.name : 'Sản phẩm không xác định'}"
+                                 th:unless="${product.imageUrl == null}"
+                                 onerror="this.onerror=null; this.src='/uploads/default.png'; console.log('Image failed: ' + this.src);" />
+                        </div>
+                    </div>
+                    <div class="col-md-7 product-info">
+                        <h2 th:text="${product.name != null ? product.name : 'Tên không xác định'}">Tên sản phẩm</h2>
+                        <div class="product-price" 
+                             th:text="${product.salePrice != null ? #numbers.formatDecimal(product.salePrice, 0, 'COMMA', 0, 'NONE') : #numbers.formatDecimal(product.price != null ? product.price : 0, 0, 'COMMA', 0, 'NONE')} + ' VND'">0 VND</div>
+                        <div class="product-description" th:utext="${product.description != null ? product.description : ''}">Mô tả sản phẩm</div>
+                        <div class="button-group">
+                            <input type="number" class="quantity-input" min="1" value="1" />
+                            <a href="javascript:void(0)"
+                               th:attr="onclick=|addToCart(${product.id}, '${product.name != null ? product.name : ''}', '${product.imageUrl != null ? product.imageUrl : ''}', document.querySelector('.quantity-input').value, ${product.salePrice != null ? product.salePrice : product.price})|"
+                               class="add_cart">Thêm vào giỏ <i class="fa fa-shopping-cart"></i></a>
+                            <button class="wishlist-btn" th:attr="data-id=${product.id}, data-name=${product.name != null ? product.name : ''}, data-image-url=${product.imageUrl != null ? product.imageUrl : ''}, data-price=${product.price != null ? product.price : 0}">
+                                <i class="fa fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="related-products" th:if="${products != null and not #lists.isEmpty(products)}">
+                    <h2>Sản phẩm liên quan</h2>
+                    <div class="row align-items-center latest_product_inner">
+                        <div class="col-lg-4 col-sm-6" th:each="p : ${products}">
+                            <div class="single_product_item">
+                                <img th:src="@{'/uploads/' + ${p.imageUrl}}" alt="" 
+                                     onerror="this.onerror=null; this.src='/uploads/default.png'; console.log('Image failed: ' + this.src);" />
+                                <div class="single_product_text">
+                                    <h4 th:text="${p.name != null ? p.name : 'Tên không xác định'}">Tên sản phẩm</h4>
+                                    <h3 th:text="${p.salePrice != null ? #numbers.formatDecimal(p.salePrice, 0, 'COMMA', 0, 'NONE') : #numbers.formatDecimal(p.price != null ? p.price : 0, 0, 'COMMA', 0, 'NONE')} + ' VND'">0 VND</h3>
+                                    <div class="button-group-related">
+                                        <a href="javascript:void(0)"
+                                           th:attr="onclick=|addToCart(${p.id}, '${p.name != null ? p.name : ''}', '${p.imageUrl != null ? p.imageUrl : ''}', document.querySelector('.quantity-input').value, ${p.salePrice != null ? p.salePrice : p.price})|"
+                                           class="btn-outline-primary-related add_cart">Thêm vào giỏ <i class="fa fa-shopping-cart"></i></a>
+                                        <a th:href="@{/product-detail/{id}(id=${p.id})}" class="btn-primary-related">Xem thêm</a>
+                                    </div>
+                                    <button class="wishlist-btn" th:attr="data-id=${p.id}, data-name=${p.name != null ? p.name : ''}, data-image-url=${p.imageUrl != null ? p.imageUrl : ''}, data-price=${p.price != null ? p.price : 0}">
+                                        <i class="fa fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div th:if="${products == null or #lists.isEmpty(products)}" class="col-12 text-center">
+                            <p>Không có sản phẩm liên quan.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    <script th:inline="javascript">
+        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+        function addToCart(productId, productName, image, quantity, price) {
+            const actualQuantity = parseInt(quantity) || 1;
+            console.log("Thêm vào giỏ hàng:", { productId, productName, image, quantity: actualQuantity, price });
+            const item = { productId, productName, image, quantity: actualQuantity, price };
+            const button = event.target;
+            button.classList.add('loading');
+            fetch('/api/cart/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(item)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("Đã thêm vào giỏ hàng!");
+                    return response.json();
+                } else throw new Error("Thêm vào giỏ hàng thất bại: " + response.statusText);
+            })
+            .then(data => {
+                console.log("API response:", data);
+                const cartBadge = document.getElementById("cart-count");
+                if (cartBadge) {
+                    fetch('/api/cart')
+                        .then(response => response.json())
+                        .then(cartItems => {
+                            const totalCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+                            cartBadge.innerText = totalCount;
+                            cartBadge.style.display = totalCount > 0 ? 'inline' : 'none';
+                        })
+                        .catch(error => console.error("Lỗi đồng bộ giỏ hàng:", error));
+                }
+                if (confirm("Bạn có muốn xem giỏ hàng ngay bây giờ?")) {
+                    window.location.href = '/cart';
+                }
+            })
+            .catch(error => {
+                console.error("Lỗi khi thêm vào giỏ hàng:", error);
+                alert("Đã xảy ra lỗi khi thêm vào giỏ hàng. Vui lòng kiểm tra console.");
+            })
+            .finally(() => {
+                button.classList.remove('loading');
+            });
+        }
+
+        function addToWishlist(id, name, imageUrl, price) {
+            console.log("Thêm vào wishlist - Debug:", { id, name, imageUrl, price });
+            const btn = document.querySelector(`.wishlist-btn[data-id="${id}"]`);
+            if (!wishlist.some(item => item.id === parseInt(id))) {
+                wishlist.push({ id: parseInt(id), name, imageUrl, price: parseFloat(price) });
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                if (btn) btn.classList.add('active');
+                // Gửi request đến server để đồng bộ
+                fetch(`/wishlist?addProductId=${id}`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to sync with server');
+                    console.log("Wishlist synced with server for ID:", id);
+                    updateWishlistBadge();
+                })
+                .catch(error => console.error("Error syncing wishlist:", error));
+                alert('Đã thêm vào danh sách yêu thích!');
+            } else {
+                wishlist = wishlist.filter(item => item.id !== parseInt(id));
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                if (btn) btn.classList.remove('active');
+                fetch(`/wishlist?removeProductId=${id}`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to remove from server');
+                    console.log("Removed from wishlist on server for ID:", id);
+                    updateWishlistBadge();
+                })
+                .catch(error => console.error("Error removing from wishlist:", error));
+                alert('Đã xóa khỏi danh sách yêu thích!');
+            }
+            updateWishlistStatus();
+        }
+
+        function updateWishlistStatus() {
+            console.log("Updating wishlist status:", wishlist);
+            document.querySelectorAll('.wishlist-btn').forEach(btn => {
+                const id = btn.getAttribute('data-id');
+                if (wishlist.some(item => item.id === parseInt(id))) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        function updateWishlistBadge() {
+            const wishlistBadge = document.querySelector('#wishlist-count');
+            if (wishlistBadge) {
+                fetch('/api/wishlist')
+                    .then(response => response.json())
+                    .then(wishlistItems => {
+                        const totalCount = wishlistItems.length; // Hoặc tính dựa trên số lượng sản phẩm
+                        wishlistBadge.innerText = totalCount;
+                        wishlistBadge.style.display = totalCount > 0 ? 'inline' : 'none';
+                    })
+                    .catch(error => console.error("Lỗi đồng bộ wishlist badge:", error));
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM loaded - Attaching event listeners");
+            updateWishlistStatus();
+            updateWishlistBadge();
+
+            const quantityInput = document.querySelector('.quantity-input');
+            if (quantityInput) {
+                quantityInput.addEventListener('change', function() {
+                    if (this.value < 1) this.value = 1;
+                });
+            }
+
+            document.querySelectorAll('.wishlist-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const id = this.getAttribute('data-id');
+                    const name = this.getAttribute('data-name');
+                    const imageUrl = this.getAttribute('data-image-url');
+                    const price = this.getAttribute('data-price');
+                    console.log("Wishlist button clicked - Debug:", { id, name, imageUrl, price });
+                    if (id && name && imageUrl !== null && price !== null) {
+                        addToWishlist(parseInt(id), name, imageUrl, parseFloat(price));
+                    } else {
+                        console.error('Dữ liệu thiếu khi thêm vào wishlist:', { id, name, imageUrl, price });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

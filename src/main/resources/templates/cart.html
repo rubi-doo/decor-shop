@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/user-layout}">
+
+<head>
+    <title>Giỏ Hàng</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+  <!--================Cart Area =================-->
+  <section class="cart_area padding_top">
+    <div class="container">
+      <!-- Tiêu đề -->
+      <div class="row mb-4">
+        <div class="col-12 text-center">
+          <h3>Giỏ Hàng</h3>
+        </div>
+      </div>
+
+      <div class="cart_inner">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Sản phẩm</th>
+                <th scope="col">Giá</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Thành tiền</th>
+                <th scope="col">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="cartTableBody">
+              <!-- Dữ liệu được render bằng cart.js -->
+            </tbody>
+          </table>
+
+          <!-- Hàng nút + tổng tiền -->
+          <div class="row mt-4 text-center">
+            <div class="col-md-4 mb-2">
+              <a class="btn_1 w-100" href="javascript:history.back()">← Tiếp tục mua hàng</a>
+            </div>
+            <div class="col-md-4 mb-2 d-flex align-items-center justify-content-center">
+              <h5 class="mb-0">
+                Tổng tiền: <span id="cartTotal">0 VNĐ</span>
+              </h5>
+            </div>
+            <div class="col-md-4 mb-2">
+              <a class="btn_1 checkout_btn_1 w-100" href="/checkout">Thanh toán</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--================End Cart Area =================-->
+
+  <script src="/js/cart.js"></script>
+</section>
+
+</body>
+</html>

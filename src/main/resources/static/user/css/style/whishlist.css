@@ -1,0 +1,99 @@
+
+        .wishlist-section {
+            padding: 50px 0;
+            background: #f3f4f6;
+        }
+        .wishlist-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .wishlist-header h2 {
+            font-size: 28px;
+            color: #1e3a8a;
+            font-weight: 700;
+        }
+        .wishlist-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .wishlist-table th,
+        .wishlist-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .wishlist-table th {
+            background-color: #f3f4f6;
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+        .wishlist-table img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .wishlist-table .product-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+        .btn-outline-primary-related {
+            border: 2px solid #f97316;
+            color: #f97316;
+            background: transparent;
+            padding: 6px 12px;
+            font-weight: 500;
+            border-radius: 20px;
+            transition: none;
+            font-size: 12px;
+            text-decoration: none;
+        }
+        .btn-primary-related {
+            border: 2px solid #1e3a8a;
+            color: #1e3a8a;
+            background: transparent;
+            padding: 6px 12px;
+            font-weight: 500;
+            border-radius: 20px;
+            transition: none;
+            font-size: 12px;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn-primary-related:hover {
+            background: #1e3a8a;
+            color: #fff;
+            text-decoration: none;
+        }
+        .remove-btn {
+            background: #f97316;
+            color: #fff;
+            border: 2px solid #f97316;
+            padding: 5px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .remove-btn:hover {
+            background: #e06b1a;
+        }
+        @media (max-width: 768px) {
+            .wishlist-table th,
+            .wishlist-table td {
+                padding: 10px;
+                font-size: 12px;
+            }
+            .wishlist-table img {
+                width: 80px;
+                height: 80px;
+            }
+            .product-actions {
+                flex-direction: column;
+            }
+            .btn-outline-primary-related,
+            .btn-primary-related,
+            .remove-btn {
+                width: 100%;
+            }
+        }

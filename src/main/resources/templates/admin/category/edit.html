@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/admin-layout}">
+<head>
+<title>Cập Nhật Danh Mục</title>
+</head>
+
+<body>
+	<section layout:fragment="content">
+		<div class="container-xxl container-p-y">
+			<h4 class="fw-bold py-3 mb-4">
+				<span class="text-muted fw-light">Quản Lý Danh Mục /</span> Cập Nhật
+				Danh Mục
+			</h4>
+
+			<div class="card mb-4">
+				<div
+					class="card-header d-flex justify-content-between align-items-center">
+					<h5 class="mb-0">Thông Tin Danh Mục</h5>
+				</div>
+				<div class="card-body">
+					<form th:action="@{/admin/categories/edit/{id}(id=${category.id})}"
+						th:object="${category}" method="post">
+
+						<!-- Name -->
+						<div class="row mb-3">
+							<label for="name" class="col-sm-2 col-form-label"> Tên
+								danh mục <span class="text-danger">*</span>
+							</label>
+							<div class="col-sm-10">
+								<input type="text" th:field="*{name}" id="name"
+									class="form-control" placeholder="Tên danh mục"
+									th:classappend="${#fields.hasErrors('name')} ? 'is-invalid'">
+								<div th:replace="~{admin/fragment/form-error :: error('name')}"></div>
+							</div>
+						</div>
+
+						<!-- Description -->
+						<div class="row mb-3">
+							<label class="col-sm-2 col-form-label" for="description">Mô
+								Tả</label>
+							<div class="col-sm-10">
+								<textarea th:field="*{description}" id="description"
+									class="form-control" rows="3" placeholder="Mô tả danh mục"></textarea>
+							</div>
+						</div>
+
+						<!-- Parent Category -->
+						<div class="row mb-3">
+							<label class="col-sm-2 col-form-label" for="parent">Danh
+								Mục Cha</label>
+							<div class="col-sm-10">
+								<select th:field="*{parent}" id="parent" class="form-select">
+									<option th:value="__${null}__">-- Không có danh mục
+										cha --</option>
+									<option th:each="parentCat : ${parentCategories}"
+										th:value="${parentCat.id}"
+										th:text="${parentCat.parent == null ? parentCat.name : parentCat.parent.name + ' > ' + parentCat.name}">
+									</option>
+								</select>
+							</div>
+						</div>
+
+						<!-- Status -->
+						<div class="row mb-4">
+							<label class="col-sm-2 col-form-label d-block">Trạng Thái</label>
+							<div class="col-sm-10">
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio"
+										th:field="*{status}" value="1" id="active" /> <label
+										class="form-check-label" for="active">Hiển thị</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio"
+										th:field="*{status}" value="0" id="inactive"> <label
+										class="form-check-label" for="inactive">Ẩn</label>
+								</div>
+							</div>
+						</div>
+
+						<!-- Buttons -->
+						<div class="row justify-content-end">
+							<div class="col-sm-10">
+								<button type="submit" class="btn btn-primary me-2">
+									<i class="bx bx-save"></i> Lưu
+								</button>
+								<a th:href="@{/admin/categories}" class="btn btn-secondary">
+									<i class="bx bx-arrow-back"></i> Hủy
+								</a>
+							</div>
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

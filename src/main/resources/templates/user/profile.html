@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zxx" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Mini Finance - Profile Page</title>
+
+    <!-- CSS FILES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link th:href="@{/user/profile/css/bootstrap.min.css}" rel="stylesheet">
+
+    <link th:href="@{/user/profile/css/bootstrap-icons.css}" rel="stylesheet">
+
+    <link th:href="@{/user/profile/css/tooplate-mini-finance.css}" rel="stylesheet">
+    <!--
+
+Tooplate 2135 Mini Finance
+
+https://www.tooplate.com/view/2135-mini-finance
+
+Bootstrap 5 Dashboard Admin Template
+
+-->
+</head>
+
+<body>
+    
+    <div th:replace="user/profile/fragment/header :: header"></div>
+
+    <div class="container-fluid">
+        <div class="row">
+           
+            <div th:replace="user/profile/fragment/siderbar :: siderbar"></div>
+
+            <main class="main-wrapper col-md-9 ms-sm-auto py-4 col-lg-9 px-md-4 border-start">
+                <section layout:fragment="main"></section>
+                <section layout:fragment="update"></section>
+                <section layout:fragment="change-password"></section>
+                <div th:replace="user/profile/fragment/footer :: footer"></div>
+            </main>
+
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT FILES -->
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/custom.js}"></script>
+
+</body>
+
+</html>
