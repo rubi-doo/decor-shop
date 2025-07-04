@@ -40,18 +40,6 @@ public class ShopController {
 		return parents;
 	}
 
-	// Trang chủ
-	@GetMapping("/product")
-	public String product(Model model) {
-		List<Category> parentCategories = categoryService.getAllParentCategoriesWithChildren();
-		model.addAttribute("categories", parentCategories);
-		
-		 List<Product> latestProducts = productService.getLatestProducts();
-		    model.addAttribute("latestProducts", latestProducts);
-		return "layout/user-layout";
-
-	}
-
 	@GetMapping("/category/{id}")
 	// Xem sản phẩm theo danh mục
 	public String viewByCategory(@PathVariable Long id, @RequestParam(required = false) String keyword,

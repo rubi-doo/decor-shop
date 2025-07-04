@@ -20,7 +20,7 @@ public class SecurityConfig {
         http
                 .securityMatcher("/admin/**") // áp dụng cho /admin/**
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/login").permitAll()
+                        .requestMatchers("/admin/login", "/admin/assets/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN"))
                 .formLogin(form -> form
                         .loginPage("/admin/login")
