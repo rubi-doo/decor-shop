@@ -50,7 +50,7 @@ public class UserService implements UserDetailsService {
 
     public void registerUser(RegisterUserDto dto) {
         if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already exists " + dto.getEmail());
+            throw new RuntimeException("Email đã tồn tại !  ");
         }
 
         User user = new User();
