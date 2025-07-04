@@ -21,14 +21,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByTransactionId(String transactionId);
     List<Order> findByPaymentStatus(String paymentStatus);
     
-	long countByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
-
-    @Query("SELECT SUM(o.total) FROM Order o WHERE o.createdAt BETWEEN :start AND :end")
-    Optional<BigDecimal> sumTotalByCreatedAtBetween(@Param("start") LocalDateTime start,
-                                                    @Param("end") LocalDateTime end);
-
-    List<Order> findTop5ByOrderByCreatedAtDesc();
-
     
    
 }
