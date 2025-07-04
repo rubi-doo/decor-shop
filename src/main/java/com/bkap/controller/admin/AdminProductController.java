@@ -237,9 +237,9 @@ public class AdminProductController {
 
 	
 	@GetMapping("/products/delete/{id}")
-	
-	public String delete(@PathVariable("id") Long id) {
+	public String delete(@PathVariable("id") Long id, RedirectAttributes redirectAttributes ) {
 		productService.deleteById(id);
+		redirectAttributes.addFlashAttribute("success", "Xóa sản phẩm thành công.");
 		return "redirect:/admin/products";
 	}
 }
