@@ -1,0 +1,18 @@
+<!-- fragments/pagination.html -->
+<div th:fragment="pager(page, baseUrl)">
+  <ul class="pagination justify-content-center mt-3">
+    <li th:classappend="${page.first} ? 'disabled'" class="page-item">
+      <a class="page-link" th:href="@{${baseUrl}(page=${page.number - 1})}">«</a>
+    </li>
+
+    <li class="page-item"
+        th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+        th:classappend="${page.number == i} ? 'active'">
+      <a class="page-link" th:href="@{${baseUrl}(page=${i})}" th:text="${i + 1}">1</a>
+    </li>
+
+    <li th:classappend="${page.last} ? 'disabled'" class="page-item">
+      <a class="page-link" th:href="@{${baseUrl}(page=${page.number + 1})}">»</a>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/user-layout}">
+<head>
+    <title>Trang Chủ</title>
+    
+    
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <section th:replace="~{user/fragment/banner :: banner(banners=${banners})}" th:with="showBanner=${true}"></section>
+        <div class="summer-sale-banner">
+            🔥 CHÀO HÈ RỰC RỠ - GIẢM GIÁ ĐẾN 70% 🔥
+        </div>
+
+        <!-- Header2 -->
+        <header class="header2">
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-12 text-center">
+                        <nav class="navbar navbar-expand-lg navbar-light">
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent2">
+                                <ul class="navbar-nav">
+                                    <!-- Mega Menu -->
+                                    <li class="nav-item dropdown position-static" th:each="cat1 : ${categories}">
+                                        <a class="nav-link dropdown-toggle" href="#" th:text="${cat1.name}"
+                                           id="megaMenu__${cat1.id}" data-toggle="dropdown"
+                                           aria-haspopup="true" aria-expanded="false"></a>
+                                        <div class="dropdown-menu w-100 mega-menu p-4"
+                                             th:attr="aria-labelledby='megaMenu__' + ${cat1.id}">
+                                            <div class="row">
+                                                <div class="col-md-3" th:each="cat2 : ${cat1.children}">
+                                                    <h6 class="dropdown-header">
+                                                        <a th:href="@{/category/{id}(id=${cat2.id})}"
+                                                           th:text="${cat2.name}"
+                                                           class="dropdown-item font-weight-bold"></a>
+                                                    </h6>
+                                                    <div th:if="${cat2.children != null and !cat2.children.isEmpty()}">
+                                                        <a class="dropdown-item" th:each="cat3 : ${cat2.children}"
+                                                           th:href="@{/category/{id}(id=${cat3.id})}"
+                                                           th:text="${cat3.name}"></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                               
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="newest_product_area">
+            <div class="container">
+                <div class="newest_section_tittle">
+                    <h2>Sản phẩm mới nhất</h2>
+                </div>
+                <div class="row latest_product_inner">
+                    <div class="col-lg-3 col-sm-6" th:each="p : ${latestProducts}">
+                        <div class="newest_product_item">
+                            <img th:src="@{'/uploads/' + ${p.imageUrl}}" alt=""
+                                 onerror="this.onerror=null; this.src='/images/default.png'" />
+                            <div class="newest_product_text">
+                                <h4 th:text="${p.name}">Tên sản phẩm</h4>
+                                <h3 th:text="${#numbers.formatDecimal(p.salePrice != null ? p.salePrice : p.price, 0, 'COMMA', 0, 'NONE')} + ' VND'">0 VND</h3>
+                                <div class="newest_button_group">
+                                    <a href="javascript:void(0)"
+                                       th:attr="data-id=${p.id}, data-name=${p.name != null ? p.name : ''}, data-image-url=${p.imageUrl != null ? p.imageUrl : ''}, data-price=${p.price != null ? p.price : 0}"
+                                       class="btn btn-outline-primary">Thêm vào giỏ <i class="fa fa-shopping-cart"></i></a>
+                                    <a th:href="@{/product-detail/{id}(id=${p.id})}" class="btn btn-primary">Xem thêm</a>
+                                    <button class="wishlist-btn" th:attr="data-id=${p.id}, data-name=${p.name != null ? p.name : ''}, data-image-url=${p.imageUrl != null ? p.imageUrl : ''}, data-price=${p.price != null ? p.price : 0}">
+                                        <i class="fa fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${#lists.isEmpty(latestProducts)}" class="col-12 text-center">
+                        <p>Chưa có sản phẩm nào được đăng gần đây.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="fb-chatbox-toggle">
+            <i class="fab fa-facebook-messenger"></i>
+        </div>
+        <div class="fb-chatbox">
+            <div class="fb-chatbox-header">
+                <span>Chat với chúng tôi</span>
+                <span class="close-btn">×</span>
+            </div>
+            <div class="fb-chatbox-body">
+                <div class="message received">Xin chào! Bạn cần hỗ trợ gì?</div>
+                <div class="message sent">Cảm ơn, tôi muốn hỏi về sản phẩm!</div>
+            </div>
+            <div class="fb-chatbox-footer">
+                <input type="text" placeholder="Nhập tin nhắn...">
+                <button>Gửi</button>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

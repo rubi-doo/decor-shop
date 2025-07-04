@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/admin-layout}">
+<head>
+<title>Quản Lý Danh Mục</title>
+</head>
+
+<body>
+	<section layout:fragment="content">
+		<div class="container-xxl container-p-y">
+			<!-- Breadcrumb -->
+			<h4 class="fw-bold py-3 mb-4">
+				<span class="text-muted fw-light"> Quản Lý Danh Mục/</span> Danh
+				Sách Danh Mục
+			</h4>
+			<!-- Alert -->
+			<div th:if="${success}"
+				class="alert alert-success alert-dismissible fade show" role="alert">
+				<i class="bx bx-check-circle me-2"></i> <span th:text="${success}">Thêm
+					thành công</span>
+				<button type="button" class="btn-close" data-bs-dismiss="alert"
+					aria-label="Close"></button>
+			</div>
+			<div th:if="${error}"
+				class="alert alert-danger alert-dismissible fade show" role="alert">
+				<i class="bx bx-error-circle me-2"></i> <span th:text="${error}">Có
+					lỗi xảy ra</span>
+				<button type="button" class="btn-close" data-bs-dismiss="alert"
+					aria-label="Close"></button>
+			</div>
+
+
+			<!-- Table card -->
+			<div class="card">
+				<div
+					class="card-header d-flex justify-content-between align-items-center">
+					<a th:href="@{/admin/categories/create}" class="btn btn-primary">
+						<i class="bx bx-plus me-1"></i> Thêm Danh Mục
+					</a>
+				</div>
+
+				<div class="card-body table-responsive">
+					<table class="table table-hover">
+						<thead class="table-light">
+							<tr>
+								<th>STT</th>
+								<th>Danh Mục</th>
+								<th>Tên</th>
+								<th>Mô tả</th>
+								<th>Trạng Thái</th>
+								<th>Hiển Thị Sản Phẩm</th>
+								<th class="text-center">Thao tác</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="cat, stat : ${categories}">
+								<td th:text="${stat.count}"></td>
+								<td>
+									<!-- Nếu không có cha --> <span th:if="${cat.parent == null}">—</span>
+
+									<!-- Nếu chỉ có 1 cha (cấp 2) --> <span
+									th:if="${cat.parent != null and cat.parent.parent == null}"
+									th:text="${cat.parent.name}"></span> <!-- Nếu có cha và ông (cấp 3) -->
+									<span
+									th:if="${cat.parent != null and cat.parent.parent != null}"
+									th:text="${cat.parent.parent.name + ' > ' + cat.parent.name}"></span>
+								</td>
+
+								<td th:text="${cat.name}"></td>
+								<td th:text="${cat.description}"></td>
+								<td><span th:text="${cat.status == 1 ? 'Hiển thị' : 'Ẩn'}"
+									th:classappend="${cat.status == 1} ? 'badge bg-success' : 'badge bg-secondary'">
+										Hiển Thị </span></td>
+								<td>
+	<a th:if="${#lists.size(cat.products) > 0}"
+	   th:href="@{/admin/categories/{id}/products(id=${cat.id})}"
+	   class="btn btn-outline-info btn-sm">
+	   Xem sản phẩm
+	</a>
+	<span th:if="${#lists.size(cat.products) == 0}">—</span>
+</td>
+
+								<td class="text-center"><a
+									th:href="@{/admin/categories/edit/{id}(id=${cat.id})}"
+									class="btn btn-sm btn-warning me-1"> <i
+										class="bx bx-edit-alt"></i>
+								</a> <a href="javascript:void(0);"
+									class="btn btn-icon btn-danger btn-sm" data-bs-toggle="modal"
+									data-bs-target="#deleteModal"
+									th:data-delete-url="@{/admin/categories/delete/{id}(id=${cat.id})}"
+									title="Delete"> <i class="bx bx-trash"></i>
+								</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- Pagination-->
+				<div
+					th:replace="admin/fragment/pagination :: pager(page=${page}, baseUrl='/admin/categories')">Phân
+					trang</div>
+			</div>
+		</div>
+		<div th:replace="admin/fragment/delete-modal :: deleteModal"></div>
+	</section>
+</body>
+</html>

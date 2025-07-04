@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/user-layout}">
+
+<head>
+    <title>Trang Chủ</title>
+    <style>
+        .summer-sale-banner {
+            margin-top: 10px;
+            background-color: #1e3a8a;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            padding: 15px 0;
+            animation: slideDown 1s ease-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header2 {
+            background-color: #ffffff;
+            padding: 15px 0;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        .header2 .navbar-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header2 .nav-link {
+            color: #1e3a8a;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        .header2 .nav-link:hover {
+            color: #f97316;
+            background-color: #f3f4f6;
+        }
+
+        .newest_product_area {
+            padding: 50px 5px;
+            background: #f3f4f6;
+        }
+
+        .newest_section_tittle {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .newest_section_tittle h2 {
+            font-size: 32px;
+            color: #1e3a8a;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .newest_section_tittle h2::after {
+            content: '';
+            width: 60px;
+            height: 3px;
+            background: #f97316;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .newest_product_item {
+            background: #fff;
+            border: 2px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 5px;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.1);
+            text-align: center;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .newest_product_item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.2);
+        }
+
+        .newest_product_item img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .newest_product_text h4 {
+            font-size: 18px;
+            color: #374151;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .newest_product_text h3 {
+            font-size: 20px;
+            color: #f97316;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .newest_button_group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .add_cart {
+            border: 2px solid #f97316;
+            color: #f97316;
+            background: transparent;
+            padding: 8px 15px;
+            font-size: 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            position: relative;
+        }
+        .add_cart:hover {
+            background: #f97316;
+            color: #fff;
+        }
+        .add_cart.loading::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #fff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .btn-primary-related {
+            background: #1e3a8a;
+            color: #fff;
+            border: 2px solid #1e3a8a;
+            padding: 8px 15px;
+            font-size: 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .btn-primary-related:hover {
+            background: #163a6a;
+            border-color: #163a6a;
+        }
+
+        @media (min-width: 1200px) {
+            .col-lg-3 { flex: 0 0 25%; max-width: 25%; padding: 0 5px; }
+            .newest_product_item img { height: 330px; }
+        }
+
+        @media (max-width: 992px) {
+            .col-lg-3 { flex: 0 0 50%; max-width: 50%; }
+            .newest_product_item img { height: 250px; }
+            .newest_button_group { flex-wrap: wrap; }
+            .add_cart, .btn-primary-related { width: 100%; margin-bottom: 10px; }
+        }
+
+        @media (max-width: 576px) {
+            .col-lg-3 { flex: 0 0 100%; max-width: 100%; }
+            .newest_product_item img { height: 200px; }
+            .newest_button_group { flex-direction: column; }
+            .add_cart, .btn-primary-related { width: 100%; }
+        }
+
+        .view-more-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 25px;
+            background: #1e3a8a;
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .view-more-btn:hover {
+            background: #f97316;
+            transform: translateY(-2px);
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <section th:replace="~{user/fragment/banner :: banner(banners=${banners})}" th:with="showBanner=${true}"></section>
+        <div class="summer-sale-banner">
+            🔥 CHÀO HÈ RỰC RỠ - GIẢM GIÁ ĐẾN 70% 🔥
+        </div>
+
+        <header class="header2">
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-12 text-center">
+                        <nav class="navbar navbar-expand-lg navbar-light">
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent2">
+                                <ul class="navbar-nav">
+                                    <li class="nav-item dropdown position-static" th:each="cat1 : ${categories}">
+                                        <a class="nav-link dropdown-toggle" href="#" th:text="${cat1.name}"
+                                           id="megaMenu__${cat1.id}" data-toggle="dropdown"
+                                           aria-haspopup="true" aria-expanded="false"></a>
+                                        <div class="dropdown-menu w-100 mega-menu p-4"
+                                             th:attr="aria-labelledby='megaMenu__' + ${cat1.id}">
+                                            <div class="row">
+                                                <div class="col-md-3" th:each="cat2 : ${cat1.children}">
+                                                    <h6 class="dropdown-header">
+                                                        <a th:href="@{/category/{id}(id=${cat2.id})}"
+                                                           th:text="${cat2.name}"
+                                                           class="dropdown-item font-weight-bold"></a>
+                                                    </h6>
+                                                    <div th:if="${cat2.children != null and !cat2.children.isEmpty()}">
+                                                        <a class="dropdown-item" th:each="cat3 : ${cat2.children}"
+                                                           th:href="@{/category/{id}(id=${cat3.id})}"
+                                                           th:text="${cat3.name}"></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="newest_product_area" id="newest_product_area">
+            <div class="container">
+                <div class="newest_section_tittle">
+                    <h2>Sản phẩm mới nhất</h2>
+                </div>
+                <div class="row latest_product_inner">
+                    <div class="col-lg-3 col-sm-6" th:each="p : ${latestProducts}">
+                        <div class="newest_product_item">
+                            <img th:src="@{'/uploads/' + ${p.imageUrl}}" alt=""
+                                 onerror="this.onerror=null; this.src='/uploads/default.png'; console.log('Image failed: ' + this.src);" />
+                            <div class="newest_product_text">
+                                <h4 th:text="${p.name != null ? p.name : 'Tên không xác định'}">Tên sản phẩm</h4>
+                                <h3 th:text="${p.salePrice != null ? #numbers.formatDecimal(p.salePrice, 0, 'COMMA', 0, 'NONE') : #numbers.formatDecimal(p.price != null ? p.price : 0, 0, 'COMMA', 0, 'NONE')} + ' VND'">0 VND</h3>
+                                <div class="newest_button_group">
+                                    <a href="javascript:void(0)"
+                                       th:attr="onclick=|addToCart(${p.id}, '${p.name != null ? p.name : ''}', '${p.imageUrl != null ? p.imageUrl : ''}', 1, ${p.salePrice != null ? p.salePrice : p.price})|"
+                                       class="add_cart">Thêm vào giỏ <i class="fa fa-shopping-cart"></i></a>
+                                    <a th:href="@{/product-detail/{id}(id=${p.id})}" class="btn-primary-related">Xem thêm</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:if="${#lists.isEmpty(latestProducts)}" class="col-12 text-center">
+                        <p>Chưa có sản phẩm nào được đăng gần đây.</p>
+                    </div>
+                </div>
+                <button class="view-more-btn" onclick="loadMoreProducts()">Xem thêm</button>
+            </div>
+        </section>
+    </section>
+
+    <script th:inline="javascript">
+        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+        function addToCart(productId, productName, image, quantity, price) {
+            const actualQuantity = parseInt(quantity) || 1;
+            console.log("Thêm vào giỏ hàng:", { productId, productName, image, quantity: actualQuantity, price });
+            const item = { productId, productName, image, quantity: actualQuantity, price };
+            const button = event.target;
+            button.classList.add('loading');
+            fetch('/api/cart/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(item)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("Đã thêm vào giỏ hàng!");
+                    return response.json();
+                } else throw new Error("Thêm vào giỏ hàng thất bại: " + response.statusText);
+            })
+            .then(data => {
+                console.log("API response:", data);
+                const cartBadge = document.getElementById("cart-count");
+                if (cartBadge) {
+                    fetch('/api/cart')
+                        .then(response => response.json())
+                        .then(cartItems => {
+                            const totalCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+                            cartBadge.innerText = totalCount;
+                            cartBadge.style.display = totalCount > 0 ? 'inline' : 'none';
+                        })
+                        .catch(error => console.error("Lỗi đồng bộ giỏ hàng:", error));
+                }
+                if (confirm("Bạn có muốn xem giỏ hàng ngay bây giờ?")) {
+                    window.location.href = '/cart';
+                }
+            })
+            .catch(error => {
+                console.error("Lỗi khi thêm vào giỏ hàng:", error);
+                alert("Đã xảy ra lỗi khi thêm vào giỏ hàng. Vui lòng kiểm tra console.");
+            })
+            .finally(() => {
+                button.classList.remove('loading');
+            });
+        }
+
+        function addToWishlist(id, name, imageUrl, price) {
+            console.log("Thêm vào wishlist - Debug:", { id, name, imageUrl, price });
+            const btn = document.querySelector(`.wishlist-btn[data-id="${id}"]`);
+            if (!wishlist.some(item => item.id === parseInt(id))) {
+                wishlist.push({ id: parseInt(id), name, imageUrl, price: parseFloat(price) });
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                if (btn) btn.classList.add('active');
+                alert('Đã thêm vào danh sách yêu thích!');
+            } else {
+                wishlist = wishlist.filter(item => item.id !== parseInt(id));
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                if (btn) btn.classList.remove('active');
+                alert('Đã xóa khỏi danh sách yêu thích!');
+            }
+            updateWishlistStatus();
+        }
+
+        function updateWishlistStatus() {
+            console.log("Updating wishlist status:", wishlist);
+            document.querySelectorAll('.wishlist-btn').forEach(btn => {
+                const id = btn.getAttribute('data-id');
+                if (wishlist.some(item => item.id === parseInt(id))) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM loaded - Attaching event listeners");
+            updateWishlistStatus();
+
+            // Event listener cho nút Thêm vào giỏ
+            document.querySelectorAll('.add_cart').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const onclickAttr = this.getAttribute('onclick');
+                    const id = onclickAttr.match(/addToCart\((\d+)/)[1];
+                    const name = onclickAttr.match(/'(.*?)'/)[1];
+                    const imageUrl = onclickAttr.match(/'(.*?)'/)[2];
+                    const price = onclickAttr.match(/(\d+)/)[3];
+                    let quantity = 1; // Mặc định số lượng là 1
+                    if (id && name && imageUrl && price) {
+                        addToCart(id, name, imageUrl, quantity, price);
+                    } else {
+                        console.error('Missing required data for addToCart:', { id, name, imageUrl, price });
+                    }
+                });
+            });
+
+            // Event listener cho nút Wishlist (khớp với product-detail.html)
+            // Không cần vì đã xóa wishlist-btn
+        });
+
+        function loadMoreProducts() {
+            console.log("Load more products clicked");
+        }
+    </script>
+</body>
+</html>

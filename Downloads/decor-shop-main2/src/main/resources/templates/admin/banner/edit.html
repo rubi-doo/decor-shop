@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/admin-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Chỉnh sửa Banner</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4" layout:fragment="content">
+    <h1 class="my-4">Chỉnh sửa Banner</h1>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Thông tin Banner</h5>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/admin/banner/edit/{id}(id=${banner.id})}" th:object="${banner}" method="post" enctype="multipart/form-data">
+                <!-- Tiêu đề -->
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" for="title">Tiêu đề</label>
+                    <div class="col-sm-10">
+                        <input type="text" th:field="*{title}" id="title" class="form-control" required />
+                    </div>
+                </div>
+
+                <!-- Hình ảnh -->
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" for="imageFile">Hình ảnh</label>
+                    <div class="col-sm-10">
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" id="imageFile" name="imageFile" class="custom-file-input" />
+                                <!-- Hiển thị tên tệp hiện tại trong input group, bỏ /uploads/ nếu có -->
+                                <label class="custom-file-label" for="imageFile"
+                                       th:text="${banner.image != null and not #strings.isEmpty(banner.image)} ? ${#strings.substringAfter(banner.image, '/uploads/')} : 'Chọn tệp'">Chọn tệp</label>
+                            </div>
+                        </div>
+                        <!-- Hiển thị ảnh hiện tại với kích thước nhỏ hơn -->
+                        <div class="row mb-3">
+                        <img th:if="${banner.image != null and not #strings.isEmpty(banner.image)}"
+                             th:src="${banner.image}" class="mt-2" style="max-width: 150px;" />
+                    </div>
+                    </div>
+                </div>
+
+                <!-- Ưu tiên -->
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" for="priority">Ưu tiên</label>
+                    <div class="col-sm-10">
+                        <input type="number" th:field="*{priority}" id="priority" class="form-control" required />
+                    </div>
+                </div>
+
+                <!-- Trạng thái -->
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" for="status">Trạng thái</label>
+                    <div class="col-sm-10">
+                        <select th:field="*{status}" id="status" class="form-control">
+                            <option value="1" th:selected="${banner.status == 1}">Hoạt động</option>
+                            <option value="0" th:selected="${banner.status == 0}">Ngừng hoạt động</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Liên kết -->
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" for="link">Liên kết</label>
+                    <div class="col-sm-10">
+                        <input type="text" th:field="*{link}" id="link" class="form-control" />
+                    </div>
+                </div>
+
+                <!-- Vị trí -->
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" for="position">Vị trí</label>
+                    <div class="col-sm-10">
+                        <input type="text" th:field="*{position}" id="position" class="form-control" />
+                    </div>
+                </div>
+
+                <!-- Nút điều khiển -->
+                <div class="row justify-content-end">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                        <a th:href="@{/admin/banner}" class="btn btn-secondary">Hủy</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Script để cập nhật tên tệp khi chọn file mới -->
+<script>
+    document.getElementById('imageFile').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const label = document.querySelector('.custom-file-label');
+            label.textContent = file.name;
+        }
+    });
+</script>
+</body>
+</html>

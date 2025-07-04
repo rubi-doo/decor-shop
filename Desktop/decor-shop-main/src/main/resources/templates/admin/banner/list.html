@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/admin-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách Banner</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <style>
+        .banner-image {
+            width: 150px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            padding: 2px;
+            background-color: #f8f9fa;
+            display: block;
+            margin: 0 auto;
+        }
+        .image-cell {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-4" layout:fragment="content">
+    <h1 class="my-4 text-center">Danh sách Banner</h1>
+    <div class="d-flex justify-content-end mb-3">
+        <a th:href="@{/admin/banner/create}" class="btn btn-primary">
+            <i class="bx bx-plus me-1"></i> Thêm Banner
+        </a>
+    </div>
+    <!-- Hiển thị thông báo thành công -->
+    <div th:if="${param.success}" class="alert alert-success mt-4">
+        Thao tác thành công!
+    </div>
+
+    <table class="table table-bordered table-hover text-center mt-4">
+        <thead class="thead-light">
+        <tr>
+            <th>ID</th>
+            <th>Tiêu đề</th>
+            <th>Hình ảnh</th>
+            <th>Ưu tiên</th>
+            <th>Trạng thái</th>
+            <th>Liên kết</th>
+            <th>Vị trí</th>
+            <th>Thao tác</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="banner : ${banners}">
+            <td th:text="${banner.id != null ? banner.id : 'N/A'}"></td>
+            <td th:text="${banner.title != null ? banner.title : 'N/A'}"></td>
+            <td class="image-cell">
+                <img th:if="${banner.image != null and not #strings.isEmpty(banner.image)}"
+                     th:src="${banner.image}"
+                     th:attr="alt=${banner.title}, data-fallback=${#strings.substringAfter(banner.image, '/Uploads/') ?: banner.image}"
+                     onerror="this.onerror=null; this.src='/images/' + this.getAttribute('data-fallback');"
+                     class="banner-image img-thumbnail rounded" />
+                <span th:unless="${banner.image != null and not #strings.isEmpty(banner.image)}">Không có ảnh</span>
+            </td>
+            <td th:text="${banner.priority != null ? banner.priority : 0}"></td>
+            <td th:text="${banner.status != null and banner.status == 1 ? 'Hoạt động' : 'Ngừng hoạt động'}"></td>
+            <td th:text="${banner.link != null ? banner.link : 'Không có'}"></td>
+            <td th:text="${banner.position != null ? banner.position : 'Không có'}"></td>
+            <td>
+                <a th:href="@{/admin/banner/edit/{id}(id=${banner.id})}" class="btn btn-warning btn-sm">Sửa</a>
+                <a th:href="@{/admin/banner/delete/{id}(id=${banner.id})}" 
+                   onclick="return confirm('Bạn có chắc muốn xóa?')" 
+                   class="btn btn-danger btn-sm">Xóa</a>
+            </td>
+        </tr>
+        <tr th:if="${banners == null or #lists.isEmpty(banners)}">
+            <td colspan="8">Không có banner nào.</td>
+        </tr>
+        </tbody>
+        
+    </table>
+    <!-- Pagination-->
+					<div
+						th:replace="admin/fragment/pagination :: pager(page=${page}, baseUrl='/admin/banner')">Phân
+						trang</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+<td>
+    <a th:href="@{/admin/banner/edit/{id}(id=${banner.id})}" class="btn btn-warning btn-sm">Sửa</a>
+    <a th:href="@{/admin/banner/delete/{id}(id=${banner.id})}" 
+       class="btn btn-danger btn-sm" 
+       onclick="return confirm('Bạn có chắc muốn xóa banner này không?');">
+       Xóa
+    </a>
+</td>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{user/profile}">
+
+<section layout:fragment="update">
+	<div class="row my-4">
+		<div class="col-lg-12 col-12">
+			<div class="custom-block bg-white">
+				<h6 class="mb-4">Đơn hàng của bạn</h6>
+
+				<!-- Hiển thị lỗi nếu có -->
+				<div th:if="${error}" class="text-danger" th:text="${error}"></div>
+
+				<!-- Nếu không có đơn hàng -->
+				<div th:if="${orders != null and orders.isEmpty()}">
+					<p>Hiện tại bạn chưa có đơn hàng nào.</p>
+				</div>
+
+				<!-- Nếu có đơn hàng -->
+				<div th:if="${orders != null and !orders.isEmpty()}">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>Mã đơn</th>
+								<th>Thời gian đặt</th>
+								<th>Trạng thái</th>
+								<th>Thanh toán</th>
+								<th>Tổng tiền</th>
+								<th>Chi tiết</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="order : ${orders}">
+								<td th:text="${order.id}"></td>
+								<td
+									th:text="${#temporals.format(order.orderDate, 'HH:mm dd/MM/yyyy')}"></td>
+								<td th:switch="${order.status}"><span th:case="'PENDING'">Đang
+										xử lý</span> <span th:case="'CONFIRMED'">Đã xác nhận</span> <span
+									th:case="'SHIPPED'">Đã giao hàng</span> <span th:case="*">Đã
+										hủy</span></td>
+
+								<td
+									th:text="${order.paymentMethod == 'VNPAY' ? 'VNPAY' : 'Tiền mặt'}">VNPAY</td>
+
+								<td
+									th:text="${#numbers.formatDecimal(orderTotals[order.id], 0, 'POINT', 0, 'COMMA')} + ' đ'"></td>
+								<td><a th:href="@{'/profile/my-orders/' + ${order.id}}"
+									class="btn btn-sm btn-primary">Xem</a></td>
+							</tr>
+						</tbody>
+					</table>
+					<nav aria-label="Pagination of orders" th:if="${totalPages > 1}">
+						<ul class="pagination justify-content-center">
+							<li class="page-item"
+								th:classappend="${currentPage == 0} ? 'disabled'"><a
+								class="page-link"
+								th:href="@{/profile/my-orders(page=${currentPage - 1}, size=5)}">Trước</a>
+							</li>
+
+							<li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+								class="page-item"
+								th:classappend="${currentPage == i} ? 'active'"><a
+								class="page-link"
+								th:href="@{/profile/my-orders(page=${i}, size=5)}"
+								th:text="${i + 1}"></a></li>
+
+							<li class="page-item"
+								th:classappend="${currentPage >= totalPages - 1} ? 'disabled'">
+								<a class="page-link"
+								th:href="@{/profile/my-orders(page=${currentPage + 1}, size=5)}">Tiếp</a>
+							</li>
+						</ul>
+					</nav>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

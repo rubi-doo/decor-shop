@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/user-layout}">
+
+<head>
+    <title>Danh Sách Yêu Thích</title>
+    <style>
+        /* Thêm style cho nút Xem thêm và Thêm vào giỏ */
+        .btn-view-detail {
+            background: #1e3a8a;
+            color: #fff;
+            border: 2px solid #1e3a8a;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .btn-view-detail:hover {
+            background: #163a6a;
+            border-color: #163a6a;
+            color: #fff;
+        }
+        .btn-add-to-cart {
+            border: 2px solid #f97316;
+            color: #f97316;
+            background: transparent;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .btn-add-to-cart:hover {
+            background: #f97316;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <section class="wishlist_area padding_top">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h3>Danh Sách Yêu Thích</h3>
+                </div>
+            </div>
+
+            <div class="wishlist_inner">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Sản phẩm</th>
+                                <th scope="col">Giá</th>
+                                <th scope="col">Thêm vào giỏ</th>
+                                <th scope="col">Xem thêm</th>
+                                <th scope="col">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="wishlistTableBody">
+                            <!-- Dữ liệu từ server -->
+                            <tr th:each="item : ${wishlistItems}">
+                                <td>
+                                    <img th:src="@{'/uploads/' + ${item.imageUrl}}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: cover;">
+                                    <span th:text="${item.name}">Tên sản phẩm</span>
+                                </td>
+                                <td th:text="${#numbers.formatDecimal(item.salePrice != null ? item.salePrice : item.price, 0, 'COMMA', 0, 'NONE')} + ' VNĐ'">0 VNĐ</td>
+                                <td>
+                                    <a href="javascript:void(0)" class="btn-add-to-cart" th:attr="onclick=|addToCart(${item.id}, '${item.name}', '${item.imageUrl}', 1, ${item.price})|">Mua Ngay</a>
+                                </td>
+                                <td>
+                                    <a th:href="@{'/product-detail/' + ${item.id}}" class="btn-view-detail">Xem thêm</a>
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm remove-from-wishlist" th:attr="data-id=${item.id}">Xóa</button>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(wishlistItems)}">
+                                <td colspan="5" class="text-center">Chưa có sản phẩm nào trong danh sách yêu thích.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="row mt-4 text-center">
+                        <div class="col-md-6 mb-2">
+                            <a class="btn_1 w-100" href="javascript:history.back()">← Tiếp tục mua sắm</a>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <a class="btn_1 checkout_btn_1 w-100" href="/">Trang Chủ</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script th:inline="javascript">
+        // Hàm addToCart từ home.html
+        function addToCart(id, name, imageUrl, quantity, price) {
+            console.log(`Adding to cart: id=${id}, name=${name}, imageUrl=${imageUrl}, quantity=${quantity}, price=${price}`);
+            fetch('/api/cart/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ productId: id, productName: name, image: imageUrl, quantity: quantity, price: price })
+            })
+            .then(response => { if (!response.ok) throw new Error('Add to cart failed'); return response.json(); })
+            .then(data => { 
+                console.log('Success:', data); 
+                alert('Đã thêm vào giỏ hàng!'); 
+                // Cập nhật badge giỏ hàng (nếu có)
+                const cartBadge = document.getElementById('cart-count');
+                if (cartBadge) {
+                    fetch('/api/cart')
+                        .then(response => response.json())
+                        .then(cartItems => {
+                            const totalCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+                            cartBadge.innerText = totalCount;
+                            cartBadge.style.display = totalCount > 0 ? 'inline' : 'none';
+                        })
+                        .catch(error => console.error('Lỗi đồng bộ giỏ hàng:', error));
+                }
+            })
+            .catch(error => { console.error('Error:', error); alert('Có lỗi khi thêm vào giỏ hàng!'); });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.remove-from-wishlist').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const id = parseInt(this.getAttribute('data-id'));
+                    fetch(`/wishlist?removeProductId=${id}`, { method: 'GET' })
+                        .then(response => {
+                            if (response.ok) {
+                                this.closest('tr').remove();
+                                alert('Đã xóa khỏi danh sách yêu thích!');
+                                // Cập nhật badge wishlist
+                                const wishlistBadge = document.querySelector('#wishlist-count');
+                                if (wishlistBadge) {
+                                    fetch('/api/wishlist')
+                                        .then(response => response.json())
+                                        .then(wishlistItems => {
+                                            const totalCount = wishlistItems.length;
+                                            wishlistBadge.innerText = totalCount;
+                                            wishlistBadge.style.display = totalCount > 0 ? 'inline' : 'none';
+                                        })
+                                        .catch(error => console.error('Lỗi đồng bộ wishlist badge:', error));
+                                }
+                            } else throw new Error('Failed to remove from server');
+                        })
+                        .catch(error => console.error('Error removing from wishlist:', error));
+                });
+            });
+
+            // Event listener cho nút Thêm vào giỏ
+            document.querySelectorAll('.btn-add-to-cart').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const onclickAttr = this.getAttribute('onclick');
+                    const id = onclickAttr.match(/addToCart\((\d+)/)[1];
+                    const name = onclickAttr.match(/'(.*?)'/)[1];
+                    const imageUrl = onclickAttr.match(/'(.*?)'/)[2];
+                    const price = onclickAttr.match(/(\d+)/)[3];
+                    let quantity = 1; // Mặc định số lượng là 1
+                    if (id && name && imageUrl && price) {
+                        addToCart(id, name, imageUrl, quantity, price);
+                    } else {
+                        console.error('Missing required data for addToCart:', { id, name, imageUrl, price });
+                    }
+                });
+            });
+        });
+    </script>
+</section>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zxx"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Decor Project</title>
+    <link rel="stylesheet" th:href="@{/user/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/user/css/animate.css}" />
+    <link rel="stylesheet" th:href="@{/user/css/owl.carousel.min.css}" />
+    <link rel="stylesheet" th:href="@{/user/css/all.css}" />
+    <link rel="stylesheet" th:href="@{/user/css/flaticon.css}" />
+    <link rel="stylesheet" th:href="@{/user/css/themify-icons.css}" />
+    <link rel="stylesheet" th:href="@{/user/css/magnific-popup.css}" />
+    <link rel="stylesheet" th:href="@{/user/css/slick.css}" />
+    <link rel="stylesheet" th:href="@{/user/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/user/css/custom.css}" />
+    <link rel="stylesheet" th:href="@{/user/css/style/home.css}">
+      <link rel="stylesheet" th:href="@{/user/css/style/cart.css}">
+       <link rel="stylesheet" th:href="@{/user/css/style/whishlist.css}">
+     <link rel="stylesheet" th:href="@{/user/css/style/product-detail.css}">
+    <link rel="stylesheet" th:href="@{/user/js/style/home.js}">
+    <link rel="stylesheet" th:href="@{/user/js/style/product-detail.js}">    
+        <link rel="stylesheet" th:href="@{/user/js/style/whishlist.js}">  
+
+</head>
+
+<body>
+    <!-- Header/Navbar -->
+    <header th:replace="~{user/fragment/header :: header}"></header>
+
+     <!-- Banner Section (Optional override per page) -->
+    <!-- <section th:replace="user/fragment/banner :: banner"></section> -->
+
+     <!-- Main Content -->
+    <main>
+        <!-- Content -->
+        <div class="content-wrapper">
+          <section layout:fragment="content">
+            <!-- Nội dung của từng page cụ thể sẽ được render tại đây -->
+          </section>
+    </main>
+   
+     <!-- Footer -->
+    <footer th:replace="~{user/fragment/footer :: footer}"></footer>
+    <script src="/js/home.js"></script>
+    <script th:src="@{/user/js/jquery-1.12.1.min.js}"></script>
+    <script th:src="@{/user/js/popper.min.js}"></script>
+    <script th:src="@{/user/js/bootstrap.min.js}"></script>
+    <script th:src="@{/user/js/jquery.magnific-popup.js}"></script>
+    <script th:src="@{/user/js/swiper.min.js}"></script>
+    <script th:src="@{/user/js/masonry.pkgd.js}"></script>
+    <script th:src="@{/user/js/owl.carousel.min.js}"></script>
+    <!-- <script th:src="@{/user/js/jquery.nice-select.min.js}"></script> -->
+    <script th:src="@{/user/js/slick.min.js}"></script>
+    <script th:src="@{/user/js/jquery.counterup.min.js}"></script>
+    <script th:src="@{/user/js/waypoints.min.js}"></script>
+    <script th:src="@{/user/js/contact.js}"></script>
+    <script th:src="@{/user/js/jquery.ajaxchimp.min.js}"></script>
+    <script th:src="@{/user/js/jquery.form.js}"></script>
+    <script th:src="@{/user/js/jquery.validate.min.js}"></script>
+    <script th:src="@{/user/js/mail-script.js}"></script>
+    <script th:src="@{/user/js/custom.js}"></script>
+
+    
+    
+</body>
+
+</html>

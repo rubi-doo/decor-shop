@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/user-layout}">
+
+<head>
+    <title>Danh Mục Sản Phẩm</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Custom Styles -->
+   
+    <script th:src="@{/user/js/jquery-1.12.1.min.js}"></script>
+    <script th:src="@{/user/js/jquery.nice-select.min.js}"></script>
+    <script th:src="@{/user/js/custom.js}"></script>
+   
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <section class="product-detail" th:if="${product != null}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="thumbnail">
+                            <img th:src="@{'/images/' + ${product.imageUrl}}" 
+                                 th:alt="${product.name != null ? product.name : 'Sản phẩm không xác định'}"
+                                 th:unless="${product.imageUrl == null}"
+                                 onerror="this.onerror=null; this.src='/images/default.png'; console.log('Image failed: ' + this.src);" />
+                        </div>
+                    </div>
+                    <div class="col-md-7 product-info">
+                        <h2 th:text="${product.name != null ? product.name : 'Tên không xác định'}">Tên sản phẩm</h2>
+                        <div class="product-price" 
+                             th:text="${product.salePrice != null ? #numbers.formatDecimal(product.salePrice, 0, 'COMMA', 0, 'NONE') : #numbers.formatDecimal(product.price != null ? product.price : 0, 0, 'COMMA', 0, 'NONE')} + ' VND'">0 VND</div>
+                        <div class="product-description" th:utext="${product.description != null ? product.description : ''}">Mô tả sản phẩm</div>
+                        <div class="button-group">
+                            <input type="number" class="quantity-input" min="1" value="1" />
+                            <a href="javascript:void(0)"
+                               th:attr="data-id=${product.id}, data-name=${product.name != null ? product.name : ''}, data-image-url=${product.imageUrl != null ? product.imageUrl : ''}, data-price=${product.price != null ? product.price : 0}"
+                               class="btn btn-buy">Thêm vào giỏ <i class="fa fa-shopping-cart"></i></a>
+                            <button class="wishlist-btn" th:attr="data-id=${product.id}, data-name=${product.name != null ? product.name : ''}, data-image-url=${product.imageUrl != null ? product.imageUrl : ''}, data-price=${product.price != null ? product.price : 0}">
+                                <i class="fa fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="related-products" th:if="${products != null and not #lists.isEmpty(products)}">
+                    <h2>Sản phẩm liên quan</h2>
+                    <div class="row align-items-center latest_product_inner">
+                        <div class="col-lg-4 col-sm-6" th:each="p : ${products}">
+                            <div class="single_product_item">
+                                <img th:src="@{'/images/' + ${p.imageUrl}}" alt="" />
+                                <div class="single_product_text">
+                                    <h4 th:text="${p.name != null ? p.name : 'Tên không xác định'}">Tên sản phẩm</h4>
+                                    <h3 th:text="${p.salePrice != null ? #numbers.formatDecimal(p.salePrice, 0, 'COMMA', 0, 'NONE') : #numbers.formatDecimal(p.price != null ? p.price : 0, 0, 'COMMA', 0, 'NONE')} + ' VND'">0 VND</h3>
+                                    <div class="button-group-related">
+                                        <a href="javascript:void(0)"
+                                           th:attr="data-id=${p.id}, data-name=${p.name != null ? p.name : ''}, data-image-url=${p.imageUrl != null ? p.imageUrl : ''}, data-price=${p.price != null ? p.price : 0}"
+                                           class="btn-outline-primary-related btn-buy">Thêm vào giỏ <i class="fa fa-shopping-cart"></i></a>
+                                        <a th:href="@{/product-detail/{id}(id=${p.id})}" class="btn-primary-related">Xem thêm</a>
+                                    </div>
+                                    <button class="wishlist-btn" th:attr="data-id=${p.id}, data-name=${p.name != null ? p.name : ''}, data-image-url=${p.imageUrl != null ? p.imageUrl : ''}, data-price=${p.price != null ? p.price : 0}">
+                                        <i class="fa fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div th:if="${products == null or #lists.isEmpty(products)}" class="col-12 text-center">
+                            <p>Không có sản phẩm liên quan.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div th:if="${product == null}" class="col-12 text-center">
+            <p>Sản phẩm không tồn tại.</p>
+        </div>
+    </section>
+</body>
+</html>

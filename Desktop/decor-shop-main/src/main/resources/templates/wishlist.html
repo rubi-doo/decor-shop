@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/user-layout}">
+
+<head>
+    <title>Danh Sách Yêu Thích</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Custom Styles -->
+   
+
+    <script th:src="@{/user/js/jquery-1.12.1.min.js}"></script>
+    <script th:src="@{/user/js/jquery.nice-select.min.js}"></script>
+    <script th:src="@{/user/js/custom.js}"></script>
+   
+</head>
+
+<body>
+    <section layout:fragment="content">
+        <section class="wishlist-section">
+            <div class="container">
+                <div class="wishlist-header">
+                    <h2>Danh Sách Yêu Thích</h2>
+                </div>
+                <table class="wishlist-table">
+                    <thead>
+                        <tr>
+                            <th>Hình ảnh</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody class="latest_product_inner">
+                        <!-- Danh sách sẽ được tạo động bởi JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </section>
+</body>
+</html>

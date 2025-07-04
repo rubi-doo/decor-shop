@@ -1,0 +1,6 @@
+<!-- admin/fragment/form-error.html -->
+<div th:fragment="error(field)">
+    <div th:if="${#fields.hasErrors(field)}" class="text-danger form-text">
+        <p th:each="err : ${#fields.errors(field)}" th:text="${err}"></p>
+    </div>
+</div>
