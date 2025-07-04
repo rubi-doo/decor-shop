@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/user-layout}">
+
+<head>
+    <title>Chi tiết đơn hàng</title>
+</head>
+<body>
+<section layout:fragment="content" class="container section_padding">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="section_tittle mb-4 text-center">
+                <h2 class="fw-bold">Chi tiết đơn hàng</h2>
+            </div>
+
+            <div class="card p-4">
+                <!-- Hiển thị lỗi nếu có -->
+                <div th:if="${error}" class="alert alert-danger mb-3" th:text="${error}"></div>
+
+                <!-- Thông tin đơn hàng -->
+                <div th:if="${order != null}">
+                    <div class="mb-3">
+                        <p><strong>Mã đơn hàng:</strong> <span th:text="${order.id}"></span></p>
+                        <p><strong>Ngày đặt:</strong>
+                            <span th:text="${#temporals.format(order.orderDate, 'HH:mm dd/MM/yyyy')}"></span>
+                        </p>
+                        <p>
+                            <strong>Trạng thái:</strong>
+                            <span th:switch="${order.status}">
+                                <span th:case="'PENDING'" class="text-warning">Đang xử lý</span>
+                                <span th:case="'CONFIRMED'" class="text-success">Đã xác nhận</span>
+                                <span th:case="'SHIPPED'" class="text-primary">Đã giao hàng</span>
+                                <span th:case="*">Đã hủy</span>
+                            </span>
+                        </p>
+                    </div>
+
+                    <!-- Bảng chi tiết sản phẩm -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Sản phẩm</th>
+                                    <th>Ảnh</th>
+                                    <th>Giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="detail : ${order.orderDetails}">
+                                    <td th:text="${detail.product.name}">Tên SP</td>
+                                    <td>
+                                        <img th:src="@{'/uploads/' + ${detail.product.imageUrl}}"
+                                             onerror="this.onerror=null; this.src='/images/default.png';"
+                                             th:attr="alt=${detail.product.name}"
+                                             class="rounded"
+                                             style="width: 45px; height: 45px; object-fit: cover;" />
+                                    </td>
+                                    <td th:text="${#numbers.formatDecimal(detail.price, 0, 'POINT', 0, 'COMMA')} + ' đ'">300.000 đ</td>
+                                    <td th:text="${detail.quantity}">2</td>
+                                    <td th:text="${#numbers.formatDecimal(detail.price * detail.quantity, 0, 'POINT', 0, 'COMMA')} + ' đ'">600.000 đ</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Tổng tiền -->
+                    <div class="text-end mt-3 fw-semibold fs-5">
+                        Tổng tiền: <span th:text="${#numbers.formatDecimal(totalAmount, 0, 'POINT', 0, 'COMMA')} + ' đ'">0 đ</span>
+                    </div>
+
+                    <!-- Nút quay lại -->
+                    <div class="text-center mt-4">
+                        <a th:href="@{/profile/my-orders}" class="btn_3 btn-sm px-4">
+                            ← Quay lại danh sách đơn hàng
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
