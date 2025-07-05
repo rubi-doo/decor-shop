@@ -63,7 +63,7 @@ public class ProfileController {
             String email = auth.getName();
             User user = userRepository.findByEmail(email).orElseThrow();
             model.addAttribute("user", user);
-            return "user/profile/main";
+            return "user/profile_test";
         } else {
             // Nếu người dùng chưa đăng nhập, chuyển hướng đến trang đăng nhập
             model.addAttribute("error", "Vui lòng đăng nhập để truy cập trang cá nhân.");
@@ -179,7 +179,6 @@ public class ProfileController {
         model.addAttribute("changePasswordForm", new ChangePasswordForm());
         return "user/profile/change-password"; // hoặc đường dẫn tương ứng
     }
-
     @PostMapping("/change-password")
 public String handleChangePassword(@Valid @ModelAttribute("changePasswordForm") ChangePasswordForm form,
                                    BindingResult result,
