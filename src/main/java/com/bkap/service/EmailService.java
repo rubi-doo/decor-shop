@@ -50,13 +50,23 @@ public class EmailService {
         sb.append("<table border='1' cellpadding='10' cellspacing='0' style='border-collapse: collapse;'>");
         sb.append("<tr><th>Sản phẩm</th><th>Số lượng</th><th>Giá</th></tr>");
 
+        double total = 0;
+
         for (OrderDetail detail : order.getOrderDetails()) {
+            double itemTotal = detail.getPrice() * detail.getQuantity();
+            total += itemTotal;
+
             sb.append("<tr>")
               .append("<td>").append(detail.getProduct().getName()).append("</td>")
               .append("<td>").append(detail.getQuantity()).append("</td>")
-              .append("<td>").append(detail.getPrice()).append("</td>")
+              .append("<td>").append(String.format("%,.0f", itemTotal)).append("đ</td>")
               .append("</tr>");
         }
+
+        sb.append("<tr style='font-weight: bold;'>")
+          .append("<td colspan='2' style='text-align: right;'>Tổng cộng:</td>")
+          .append("<td>").append(String.format("%,.0f", total)).append("đ</td>")
+          .append("</tr>");
 
         sb.append("</table>");
         return sb.toString();
